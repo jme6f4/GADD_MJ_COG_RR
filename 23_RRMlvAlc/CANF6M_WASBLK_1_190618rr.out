@@ -1,0 +1,1079 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   4:00 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANF6M_WASBLK_1;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+  	  		WASBLK
+    		! covariates
+  	  		DEMAGE
+    			DEMMAL  		
+    		! within predictor
+    			CANF6M
+    			ALCF6M
+    		! between predictor
+    			CANF6MBW
+    			ALCF6MBW
+    			;
+    	USEOBSERVATION =
+    			(Wave EQ 1 AND WASBLKDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+    	BETWEEN =   		
+    			CANF6MBW
+    			ALCF6MBW
+    		;
+    	WITHIN  		
+    			CANF6M
+    			ALCF6M
+    			DEMAGE
+    			DEMMAL
+    		;  		
+
+  DEFINE:
+  	! CREATE BW FAM PREDICTOR
+  		CANF6MBW = cluster_mean (CANF6M);	
+  		ALCF6MBW = cluster_mean (ALCF6M);	
+  	! CENTER WI FAM VARIABLES
+  		CENTER CANF6M (GROUPMEAN);
+  		CENTER ALCF6M (GROUPMEAN);
+  		CENTER DEMMAL (GRANDMEAN);
+  		CENTER DEMAGE (GRANDMEAN);		
+  	! CENTER BW FAM VARIABLES
+  		CENTER CANF6MBW (GRANDMEAN);
+  		CENTER ALCF6MBW (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = TWOLEVEL RANDOM;
+          ALGORITHM = INTEGRATION;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  %WITHIN%
+  	WASBLK on CANF6M;
+  	WASBLK on  DEMMAL DEMAGE ALCF6M;	
+  	WASBLK*;
+  	CANF6M*;
+
+  	CANF6M WITH DEMMAL*;
+  	CANF6M WITH DEMAGE*;
+  	ALCF6M WITH DEMMAL*;
+  	ALCF6M WITH DEMAGE*;
+  	CANF6M WITH ALCF6M*;
+
+  %BETWEEN%
+  	WASBLK on CANF6MBW ALCF6MBW;
+  	WASBLK*;
+  	CANF6MBW*;
+  	CANF6MBW WITH ALCF6MBW*;
+
+
+
+*** WARNING
+  Data set contains cases with missing on all variables except
+  x-variables.  These cases were not included in the analysis.
+  Number of cases with missing on all variables except x-variables:  1
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANF6M_WASBLK_1;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1106
+
+Number of dependent variables                                    1
+Number of independent variables                                  6
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   WASBLK
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANF6M      ALCF6M      CANF6MBW    ALCF6MBW
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Within variables
+   DEMAGE      DEMMAL      CANF6M      ALCF6M
+
+  Between variables
+   CANF6MBW    ALCF6MBW
+
+  Centering (GRANDMEAN)
+   DEMMAL      DEMAGE      CANF6MBW    ALCF6MBW
+
+  Centering (GROUPMEAN)
+   CANF6M      ALCF6M
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                             1000000
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  GD190618rr.csv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             6
+     Number of clusters                        583
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.999
+ ALCF6MBW       0.999         0.999
+ WASBLK         0.998         0.998         0.999
+ DEMAGE         0.998         0.998         0.998         0.999
+ DEMMAL         0.999         0.999         0.999         0.999         1.000
+ CANF6M         0.995         0.995         0.995         0.995         0.995
+ ALCF6M         0.995         0.995         0.994         0.994         0.995
+
+
+           Covariance Coverage
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M         0.995
+ ALCF6M         0.995         0.995
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.001         0.000        49.369         0.001         0.000
+
+
+           Means
+              CANF6M        ALCF6M
+              ________      ________
+ 1              0.005         0.002
+
+
+           Covariances
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW      72.130
+ ALCF6MBW      11.624        19.614
+ WASBLK         2.364         1.400        89.803
+ DEMAGE        -0.746         1.160         0.371         4.808
+ DEMMAL         0.579         0.122         0.668        -0.166         0.231
+ CANF6M         0.018         0.003         3.523        -3.278         0.543
+ ALCF6M         0.021        -0.001         0.040        -0.106         0.079
+
+
+           Covariances
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M        46.326
+ ALCF6M         8.090        14.049
+
+
+           Correlations
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       1.000
+ ALCF6MBW       0.309         1.000
+ WASBLK         0.029         0.033         1.000
+ DEMAGE        -0.040         0.119         0.018         1.000
+ DEMMAL         0.142         0.057         0.147        -0.158         1.000
+ CANF6M         0.000         0.000         0.055        -0.220         0.166
+ ALCF6M         0.001         0.000         0.001        -0.013         0.044
+
+
+           Correlations
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M         1.000
+ ALCF6M         0.317         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20873.208
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     CANF6MBW              0.476       0.814      -8.556   12.54%      -8.306     -4.806     -1.886
+             582.000      80.298      -0.408      21.444    3.26%       1.444      7.444
+     ALCF6MBW              0.078       2.008      -3.945    6.36%      -3.610     -2.502     -1.924
+             582.000      23.603       4.964      26.055    0.17%      -0.775      3.555
+     WASBLK               49.370      -0.587      21.000    0.09%      42.000     48.000     51.000
+            1105.000      89.804      -0.122      67.000    0.09%      53.000     58.000
+     DEMAGE                0.000       0.975      -3.864    0.09%      -1.774     -0.914     -0.414
+            1105.000       4.808       0.689       7.496    0.09%       0.106      1.566
+     DEMMAL                0.000      -0.580      -0.639   36.08%      -0.639      0.361      0.361
+            1106.000       0.231      -1.664       0.361   63.92%       0.361      0.361
+     CANF6M                0.000       0.145     -18.113    0.09%      -5.000      0.000      0.000
+            1101.000      46.333       0.451      22.330    0.09%       0.000      4.165
+     ALCF6M                0.000       0.331     -14.915    0.09%      -1.667     -0.107      0.000
+            1100.000      14.048       3.728      17.057    0.09%       0.000      1.500
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.346D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 18, %WITHIN%: ALCF6M
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       27
+
+Loglikelihood
+
+          H0 Value                      -17598.638
+          H0 Scaling Correction Factor      1.2831
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   35251.275
+          Bayesian (BIC)                 35386.505
+          Sample-Size Adjusted BIC       35300.746
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WASBLK     ON
+    CANF6M             0.071      0.036      1.971      0.049
+    DEMMAL             2.315      0.587      3.941      0.000
+    DEMAGE             0.184      0.134      1.377      0.169
+    ALCF6M            -0.049      0.058     -0.835      0.404
+
+ CANF6M   WITH
+    DEMMAL             0.441      0.094      4.675      0.000
+    DEMAGE            -2.960      0.443     -6.680      0.000
+    ALCF6M             8.052      1.213      6.640      0.000
+
+ ALCF6M   WITH
+    DEMMAL             0.077      0.055      1.408      0.159
+    DEMAGE            -0.048      0.252     -0.192      0.847
+
+ Means
+    DEMAGE             0.000      0.067      0.002      0.998
+    DEMMAL             0.000      0.015      0.000      1.000
+    CANF6M             0.005      0.003      1.689      0.091
+    ALCF6M             0.002      0.002      1.294      0.195
+
+ Variances
+    DEMAGE             4.808      0.232     20.725      0.000
+    DEMMAL             0.231      0.004     53.910      0.000
+    CANF6M            45.937      2.910     15.789      0.000
+    ALCF6M            14.047      1.414      9.935      0.000
+
+ Residual Variances
+    WASBLK            54.445      3.887     14.007      0.000
+
+Between Level
+
+ WASBLK     ON
+    CANF6MBW           0.008      0.042      0.193      0.847
+    ALCF6MBW           0.033      0.070      0.463      0.644
+
+ CANF6MBW WITH
+    ALCF6MBW          13.394      2.290      5.850      0.000
+
+ Means
+    CANF6MBW           0.476      0.371      1.282      0.200
+    ALCF6MBW           0.078      0.201      0.387      0.699
+
+ Intercepts
+    WASBLK            49.320      0.333    148.245      0.000
+
+ Variances
+    CANF6MBW          80.298      4.199     19.122      0.000
+    ALCF6MBW          23.603      2.582      9.142      0.000
+
+ Residual Variances
+    WASBLK            33.366      4.245      7.861      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WASBLK     ON
+    CANF6M             0.064      0.033      1.969      0.049
+    DEMMAL             0.148      0.037      4.046      0.000
+    DEMAGE             0.054      0.039      1.368      0.171
+    ALCF6M            -0.024      0.029     -0.834      0.405
+
+ CANF6M   WITH
+    DEMMAL             0.135      0.028      4.784      0.000
+    DEMAGE            -0.199      0.027     -7.454      0.000
+    ALCF6M             0.317      0.039      8.039      0.000
+
+ ALCF6M   WITH
+    DEMMAL             0.043      0.030      1.417      0.157
+    DEMAGE            -0.006      0.031     -0.192      0.847
+
+ Means
+    DEMAGE             0.000      0.030      0.002      0.998
+    DEMMAL             0.000      0.032      0.000      1.000
+    CANF6M             0.001      0.000      1.693      0.090
+    ALCF6M             0.001      0.000      1.301      0.193
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANF6M             1.000      0.000    999.000    999.000
+    ALCF6M             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WASBLK             0.970      0.012     77.901      0.000
+
+Between Level
+
+ WASBLK     ON
+    CANF6MBW           0.013      0.065      0.193      0.847
+    ALCF6MBW           0.027      0.059      0.465      0.642
+
+ CANF6MBW WITH
+    ALCF6MBW           0.308      0.046      6.693      0.000
+
+ Means
+    CANF6MBW           0.053      0.041      1.310      0.190
+    ALCF6MBW           0.016      0.041      0.393      0.694
+
+ Intercepts
+    WASBLK             8.534      0.559     15.275      0.000
+
+ Variances
+    CANF6MBW           1.000      0.000    999.000    999.000
+    ALCF6MBW           1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WASBLK             0.999      0.004    273.985      0.000
+
+
+R-SQUARE
+
+Within Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WASBLK             0.030      0.012      2.373      0.018
+
+Between Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WASBLK             0.001      0.004      0.306      0.759
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.346E-16
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WASBLK   ON
+    CANF6M          -0.022       0.000       0.012       0.071       0.130       0.141       0.163
+    DEMMAL           0.802       1.164       1.349       2.315       3.281       3.466       3.828
+    DEMAGE          -0.160      -0.078      -0.036       0.184       0.404       0.446       0.529
+    ALCF6M          -0.199      -0.163      -0.144      -0.049       0.047       0.065       0.101
+
+ CANF6M   WITH
+    DEMMAL           0.198       0.256       0.286       0.441       0.596       0.626       0.684
+    DEMAGE          -4.102      -3.829      -3.689      -2.960      -2.231      -2.092      -1.819
+    ALCF6M           4.928       5.675       6.057       8.052      10.047      10.429      11.176
+
+ ALCF6M   WITH
+    DEMMAL          -0.064      -0.030      -0.013       0.077       0.167       0.184       0.218
+    DEMAGE          -0.697      -0.542      -0.463      -0.048       0.366       0.445       0.600
+
+ Means
+    DEMAGE          -0.172      -0.131      -0.110       0.000       0.110       0.131       0.172
+    DEMMAL          -0.040      -0.030      -0.025       0.000       0.025       0.030       0.040
+    CANF6M          -0.003      -0.001       0.000       0.005       0.010       0.011       0.013
+    ALCF6M          -0.002      -0.001      -0.001       0.002       0.005       0.005       0.006
+
+ Variances
+    DEMAGE           4.210       4.353       4.426       4.808       5.189       5.262       5.405
+    DEMMAL           0.220       0.222       0.224       0.231       0.238       0.239       0.242
+    CANF6M          38.443      40.235      41.151      45.937      50.724      51.640      53.432
+    ALCF6M          10.405      11.276      11.721      14.047      16.373      16.818      17.689
+
+ Residual Variances
+    WASBLK          44.433      46.827      48.051      54.445      60.839      62.063      64.457
+
+Between Level
+
+ WASBLK   ON
+    CANF6MBW        -0.100      -0.074      -0.061       0.008       0.077       0.090       0.116
+    ALCF6MBW        -0.149      -0.105      -0.083       0.033       0.148       0.170       0.214
+
+ CANF6MBW WITH
+    ALCF6MBW         7.496       8.906       9.627      13.394      17.160      17.881      19.291
+
+ Means
+    CANF6MBW        -0.481      -0.252      -0.135       0.476       1.087       1.204       1.433
+    ALCF6MBW        -0.441      -0.317      -0.253       0.078       0.409       0.473       0.597
+
+ Intercepts
+    WASBLK          48.463      48.668      48.773      49.320      49.868      49.973      50.177
+
+ Variances
+    CANF6MBW        69.482      72.068      73.390      80.298      87.206      88.528      91.114
+    ALCF6MBW        16.953      18.542      19.356      23.603      27.850      28.663      30.253
+
+ Residual Variances
+    WASBLK          22.433      25.047      26.384      33.366      40.348      41.685      44.299
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WASBLK   ON
+    CANF6M          -0.020       0.000       0.011       0.064       0.118       0.128       0.148
+    DEMMAL           0.054       0.077       0.088       0.148       0.209       0.220       0.243
+    DEMAGE          -0.048      -0.023      -0.011       0.054       0.119       0.131       0.155
+    ALCF6M          -0.099      -0.082      -0.072      -0.024       0.024       0.033       0.051
+
+ CANF6M   WITH
+    DEMMAL           0.063       0.080       0.089       0.135       0.182       0.191       0.208
+    DEMAGE          -0.268      -0.252      -0.243      -0.199      -0.155      -0.147      -0.130
+    ALCF6M           0.215       0.240       0.252       0.317       0.382       0.394       0.419
+
+ ALCF6M   WITH
+    DEMMAL          -0.035      -0.016      -0.007       0.043       0.092       0.102       0.121
+    DEMAGE          -0.085      -0.066      -0.056      -0.006       0.044       0.054       0.073
+
+ Means
+    DEMAGE          -0.078      -0.060      -0.050       0.000       0.050       0.060       0.079
+    DEMMAL          -0.082      -0.063      -0.053       0.000       0.053       0.063       0.082
+    CANF6M           0.000       0.000       0.000       0.001       0.001       0.002       0.002
+    ALCF6M          -0.001       0.000       0.000       0.001       0.001       0.001       0.002
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANF6M           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCF6M           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WASBLK           0.938       0.946       0.950       0.970       0.991       0.995       1.003
+
+Between Level
+
+ WASBLK   ON
+    CANF6MBW        -0.155      -0.115      -0.094       0.013       0.120       0.140       0.180
+    ALCF6MBW        -0.124      -0.088      -0.069       0.027       0.124       0.143       0.179
+
+ CANF6MBW WITH
+    ALCF6MBW         0.189       0.218       0.232       0.308       0.383       0.398       0.426
+
+ Means
+    CANF6MBW        -0.051      -0.026      -0.014       0.053       0.120       0.133       0.158
+    ALCF6MBW        -0.089      -0.064      -0.051       0.016       0.083       0.096       0.121
+
+ Intercepts
+    WASBLK           7.095       7.439       7.615       8.534       9.453       9.629       9.973
+
+ Variances
+    CANF6MBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCF6MBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WASBLK           0.989       0.992       0.993       0.999       1.005       1.006       1.008
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANF6M        ALCF6M
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0             0             0             0             0
+ ALCF6MBW           0             0             0             0             0
+ WASBLK             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           LAMBDA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW           0             0
+ ALCF6MBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANF6M             0             0
+ ALCF6M             0             0
+
+
+           THETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0
+ ALCF6MBW           0             0
+ WASBLK             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           THETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M             0
+ ALCF6M             0             0
+
+
+           ALPHA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             1             2
+
+
+           ALPHA
+              CANF6M        ALCF6M
+              ________      ________
+ 1                  3             4
+
+
+           BETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0             0             0             0             0
+ ALCF6MBW           0             0             0             0             0
+ WASBLK             0             0             0             5             6
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           BETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW           0             0
+ ALCF6MBW           0             0
+ WASBLK             7             8
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANF6M             0             0
+ ALCF6M             0             0
+
+
+           PSI
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0
+ ALCF6MBW           0             0
+ WASBLK             0             0             9
+ DEMAGE             0             0             0            10
+ DEMMAL             0             0             0             0            11
+ CANF6M             0             0             0            12            13
+ ALCF6M             0             0             0            15            16
+
+
+           PSI
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M            14
+ ALCF6M            17            18
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANF6M        ALCF6M
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0             0             0             0             0
+ ALCF6MBW           0             0             0             0             0
+ WASBLK             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           LAMBDA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW           0             0
+ ALCF6MBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANF6M             0             0
+ ALCF6M             0             0
+
+
+           THETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0
+ ALCF6MBW           0             0
+ WASBLK             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           THETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M             0
+ ALCF6M             0             0
+
+
+           ALPHA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                 19            20            21             0             0
+
+
+           ALPHA
+              CANF6M        ALCF6M
+              ________      ________
+ 1                  0             0
+
+
+           BETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW           0             0             0             0             0
+ ALCF6MBW           0             0             0             0             0
+ WASBLK            22            23             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           BETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW           0             0
+ ALCF6MBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANF6M             0             0
+ ALCF6M             0             0
+
+
+           PSI
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW          24
+ ALCF6MBW          25            26
+ WASBLK             0             0            27
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ ALCF6M             0             0             0             0             0
+
+
+           PSI
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M             0
+ ALCF6M             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANF6M        ALCF6M
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       1.000         0.000         0.000         0.000         0.000
+ ALCF6MBW       0.000         1.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW       0.000         0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANF6M         1.000         0.000
+ ALCF6M         0.000         1.000
+
+
+           THETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M         0.000
+ ALCF6M         0.000         0.000
+
+
+           ALPHA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CANF6M        ALCF6M
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+ ALCF6MBW       0.000         0.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW       0.000         0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANF6M         0.000         0.000
+ ALCF6M         0.000         0.000
+
+
+           PSI
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000        44.902
+ DEMAGE         0.000         0.000         0.000         2.404
+ DEMMAL         0.000         0.000         0.000         0.000         0.115
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M        23.166
+ ALCF6M         0.000         7.024
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANF6M        ALCF6M
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       1.000         0.000         0.000         0.000         0.000
+ ALCF6MBW       0.000         1.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW       0.000         0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANF6M         1.000         0.000
+ ALCF6M         0.000         1.000
+
+
+           THETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M         0.000
+ ALCF6M         0.000         0.000
+
+
+           ALPHA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000        49.370         0.000         0.000
+
+
+           ALPHA
+              CANF6M        ALCF6M
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+ ALCF6MBW       0.000         0.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6MBW       0.000         0.000
+ ALCF6MBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANF6M         0.000         0.000
+ ALCF6M         0.000         0.000
+
+
+           PSI
+              CANF6MBW      ALCF6MBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANF6MBW      36.065
+ ALCF6MBW       0.000         9.807
+ WASBLK         0.000         0.000        44.902
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ ALCF6M         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANF6M        ALCF6M
+              ________      ________
+ CANF6M         0.000
+ ALCF6M         0.000         0.000
+
+
+     Beginning Time:  16:00:53
+        Ending Time:  16:00:54
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

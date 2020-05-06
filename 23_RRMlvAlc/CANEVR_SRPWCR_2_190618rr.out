@@ -1,0 +1,1075 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   4:00 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANEVR_SRPWCR_2;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+  	  		SRPWCR
+    		! covariates
+  	  		DEMAGE
+    			DEMMAL  		
+    		! within predictor
+    			CANEVR
+    			ALCEVR
+    		! between predictor
+    			CANEVRBW
+    			ALCEVRBW
+    			;
+    	USEOBSERVATION =
+    			(Wave EQ 2 AND SRPWCRDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+    	BETWEEN =   		
+    			CANEVRBW
+    			ALCEVRBW
+    		;
+    	WITHIN  		
+    			CANEVR
+    			ALCEVR
+    			DEMAGE
+    			DEMMAL
+    		;  		
+
+  DEFINE:
+  	! CREATE BW FAM PREDICTOR
+  		CANEVRBW = cluster_mean (CANEVR);	
+  		ALCEVRBW = cluster_mean (ALCEVR);	
+  	! CENTER WI FAM VARIABLES
+  		CENTER CANEVR (GROUPMEAN);
+  		CENTER ALCEVR (GROUPMEAN);
+  		CENTER DEMMAL (GRANDMEAN);
+  		CENTER DEMAGE (GRANDMEAN);		
+  	! CENTER BW FAM VARIABLES
+  		CENTER CANEVRBW (GRANDMEAN);
+  		CENTER ALCEVRBW (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = TWOLEVEL RANDOM;
+          ALGORITHM = INTEGRATION;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  %WITHIN%
+  	SRPWCR on CANEVR;
+  	SRPWCR on  DEMMAL DEMAGE ALCEVR;	
+  	SRPWCR*;
+  	CANEVR*;
+
+  	CANEVR WITH DEMMAL*;
+  	CANEVR WITH DEMAGE*;
+  	ALCEVR WITH DEMMAL*;
+  	ALCEVR WITH DEMAGE*;
+  	CANEVR WITH ALCEVR*;
+
+  %BETWEEN%
+  	SRPWCR on CANEVRBW ALCEVRBW;
+  	SRPWCR*;
+  	CANEVRBW*;
+  	CANEVRBW WITH ALCEVRBW*;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+CANEVR_SRPWCR_2;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         874
+
+Number of dependent variables                                    1
+Number of independent variables                                  6
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   SRPWCR
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR      CANEVRBW    ALCEVRBW
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Within variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR
+
+  Between variables
+   CANEVRBW    ALCEVRBW
+
+  Centering (GRANDMEAN)
+   DEMMAL      DEMAGE      CANEVRBW    ALCEVRBW
+
+  Centering (GROUPMEAN)
+   CANEVR      ALCEVR
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                             1000000
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  GD190618rr.csv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             3
+     Number of clusters                        474
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000
+ ALCEVRBW       1.000         1.000
+ SRPWCR         0.898         0.898         0.898
+ DEMAGE         0.999         0.999         0.898         0.999
+ DEMMAL         0.999         0.999         0.898         0.999         0.999
+ CANEVR         1.000         1.000         0.898         0.999         0.999
+ ALCEVR         1.000         1.000         0.898         0.999         0.999
+
+
+           Covariance Coverage
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         1.000
+ ALCEVR         1.000         1.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         5.530         0.000         0.000
+
+
+           Means
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           Covariances
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.032
+ ALCEVRBW       0.002         0.003
+ SRPWCR        -0.051         0.010        77.419
+ DEMAGE        -0.060        -0.001        -1.209         7.039
+ DEMMAL         0.008         0.000         0.247        -0.131         0.236
+ CANEVR         0.000         0.000         0.043        -0.069         0.008
+ ALCEVR         0.000         0.000         0.008        -0.009        -0.001
+
+
+           Covariances
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.027
+ ALCEVR         0.002         0.002
+
+
+           Correlations
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000
+ ALCEVRBW       0.229         1.000
+ SRPWCR        -0.032         0.020         1.000
+ DEMAGE        -0.126        -0.010        -0.052         1.000
+ DEMMAL         0.094        -0.003         0.058        -0.102         1.000
+ CANEVR         0.000         0.000         0.029        -0.157         0.099
+ ALCEVR         0.000         0.000         0.018        -0.066        -0.039
+
+
+           Correlations
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         1.000
+ ALCEVR         0.232         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -2183.954
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     CANEVRBW              0.005      -3.327      -0.937    1.48%       0.063      0.063      0.063
+             474.000       0.032      11.199       0.063   89.45%       0.063      0.063
+     ALCEVRBW              0.000     -11.987      -0.994    0.21%       0.006      0.006      0.006
+             474.000       0.004     159.574       0.006   98.95%       0.006      0.006
+     SRPWCR                5.571       0.243     -24.000    0.13%      -1.000      4.000      6.000
+             785.000      77.432       3.210      64.000    0.13%       8.000     12.000
+     DEMAGE                0.000       0.532      -5.277    0.11%      -2.297     -0.937     -0.307
+             873.000       7.040       0.006       9.743    0.11%       0.433      2.163
+     DEMMAL                0.000      -0.488      -0.619   38.14%      -0.619      0.381      0.381
+             873.000       0.236      -1.762       0.381   61.86%       0.381      0.381
+     CANEVR                0.000      -0.380      -0.750    0.11%       0.000      0.000      0.000
+             874.000       0.027       7.193       0.667    0.23%       0.000      0.000
+     ALCEVR                0.000      -2.060      -0.667    0.11%       0.000      0.000      0.000
+             874.000       0.002     108.189       0.500    0.34%       0.000      0.000
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.253D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 3, %WITHIN%: [ CANEVR ]
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       27
+
+Loglikelihood
+
+          H0 Value                       -2958.142
+          H0 Scaling Correction Factor      8.5392
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                    5970.284
+          Bayesian (BIC)                  6099.158
+          Sample-Size Adjusted BIC        6013.412
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ SRPWCR     ON
+    CANEVR             0.692      1.830      0.378      0.705
+    DEMMAL             1.026      0.671      1.528      0.126
+    DEMAGE            -0.164      0.119     -1.373      0.170
+    ALCEVR             2.441      4.120      0.593      0.554
+
+ CANEVR   WITH
+    DEMMAL             0.007      0.003      2.195      0.028
+    DEMAGE            -0.065      0.015     -4.189      0.000
+    ALCEVR             0.002      0.001      1.724      0.085
+
+ ALCEVR   WITH
+    DEMMAL            -0.001      0.001     -1.024      0.306
+    DEMAGE            -0.009      0.006     -1.529      0.126
+
+ Means
+    DEMAGE             0.000      0.100      0.000      1.000
+    DEMMAL             0.000      0.017      0.000      1.000
+    CANEVR             0.000      0.000    999.000    999.000
+    ALCEVR             0.000      0.000    999.000    999.000
+
+ Variances
+    DEMAGE             7.039      0.329     21.378      0.000
+    DEMMAL             0.236      0.004     56.915      0.000
+    CANEVR             0.027      0.004      6.929      0.000
+    ALCEVR             0.002      0.001      1.992      0.046
+
+ Residual Variances
+    SRPWCR            73.771      8.719      8.461      0.000
+
+Between Level
+
+ SRPWCR     ON
+    CANEVRBW          -2.531      1.398     -1.810      0.070
+    ALCEVRBW           4.865      1.470      3.309      0.001
+
+ CANEVRBW WITH
+    ALCEVRBW           0.003      0.002      1.464      0.143
+
+ Means
+    CANEVRBW           0.005      0.008      0.615      0.539
+    ALCEVRBW           0.000      0.003     -0.090      0.929
+
+ Intercepts
+    SRPWCR             5.511      0.318     17.355      0.000
+
+ Variances
+    CANEVRBW           0.032      0.005      5.993      0.000
+    ALCEVRBW           0.004      0.002      1.713      0.087
+
+ Residual Variances
+    SRPWCR             3.135      4.394      0.713      0.476
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ SRPWCR     ON
+    CANEVR             0.013      0.035      0.377      0.706
+    DEMMAL             0.058      0.037      1.562      0.118
+    DEMAGE            -0.050      0.036     -1.390      0.165
+    ALCEVR             0.014      0.024      0.588      0.556
+
+ CANEVR   WITH
+    DEMMAL             0.084      0.037      2.268      0.023
+    DEMAGE            -0.149      0.030     -4.996      0.000
+    ALCEVR             0.233      0.085      2.747      0.006
+
+ ALCEVR   WITH
+    DEMMAL            -0.047      0.040     -1.150      0.250
+    DEMAGE            -0.071      0.033     -2.111      0.035
+
+ Means
+    DEMAGE             0.000      0.038      0.000      1.000
+    DEMMAL             0.000      0.036      0.000      1.000
+    CANEVR             0.000      0.000    999.000    999.000
+    ALCEVR             0.000      0.000    999.000    999.000
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANEVR             1.000      0.000    999.000    999.000
+    ALCEVR             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SRPWCR             0.993      0.005    183.112      0.000
+
+Between Level
+
+ SRPWCR     ON
+    CANEVRBW          -0.249      0.200     -1.245      0.213
+    ALCEVRBW           0.166      0.128      1.295      0.195
+
+ CANEVRBW WITH
+    ALCEVRBW           0.272      0.106      2.561      0.010
+
+ Means
+    CANEVRBW           0.028      0.048      0.587      0.557
+    ALCEVRBW          -0.004      0.045     -0.092      0.927
+
+ Intercepts
+    SRPWCR             3.007      2.014      1.493      0.135
+
+ Variances
+    CANEVRBW           1.000      0.000    999.000    999.000
+    ALCEVRBW           1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SRPWCR             0.933      0.102      9.163      0.000
+
+
+R-SQUARE
+
+Within Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SRPWCR             0.007      0.005      1.236      0.217
+
+Between Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SRPWCR             0.067      0.102      0.657      0.511
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix             -0.253E-16
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ SRPWCR   ON
+    CANEVR          -4.022      -2.895      -2.319       0.692       3.702       4.279       5.406
+    DEMMAL          -0.703      -0.290      -0.078       1.026       2.131       2.342       2.756
+    DEMAGE          -0.471      -0.398      -0.360      -0.164       0.032       0.070       0.144
+    ALCEVR          -8.171      -5.634      -4.336       2.441       9.219      10.516      13.053
+
+ CANEVR   WITH
+    DEMMAL          -0.001       0.001       0.002       0.007       0.012       0.013       0.015
+    DEMAGE          -0.105      -0.095      -0.090      -0.065      -0.039      -0.035      -0.025
+    ALCEVR          -0.001       0.000       0.000       0.002       0.004       0.004       0.005
+
+ ALCEVR   WITH
+    DEMMAL          -0.004      -0.003      -0.003      -0.001       0.001       0.001       0.002
+    DEMAGE          -0.025      -0.021      -0.019      -0.009       0.001       0.003       0.006
+
+ Means
+    DEMAGE          -0.257      -0.196      -0.164       0.000       0.164       0.196       0.257
+    DEMMAL          -0.045      -0.034      -0.029       0.000       0.029       0.034       0.045
+    CANEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    DEMAGE           6.191       6.394       6.498       7.039       7.581       7.685       7.888
+    DEMMAL           0.225       0.228       0.229       0.236       0.243       0.244       0.247
+    CANEVR           0.017       0.019       0.021       0.027       0.034       0.035       0.037
+    ALCEVR          -0.001       0.000       0.000       0.002       0.005       0.005       0.006
+
+ Residual Variances
+    SRPWCR          51.312      56.681      59.428      73.771      88.115      90.861      96.231
+
+Between Level
+
+ SRPWCR   ON
+    CANEVRBW        -6.133      -5.272      -4.831      -2.531      -0.230       0.210       1.071
+    ALCEVRBW         1.078       1.983       2.447       4.865       7.284       7.747       8.652
+
+ CANEVRBW WITH
+    ALCEVRBW        -0.002      -0.001       0.000       0.003       0.006       0.007       0.008
+
+ Means
+    CANEVRBW        -0.016      -0.011      -0.009       0.005       0.019       0.021       0.026
+    ALCEVRBW        -0.008      -0.006      -0.005       0.000       0.004       0.005       0.007
+
+ Intercepts
+    SRPWCR           4.693       4.889       4.989       5.511       6.034       6.134       6.329
+
+ Variances
+    CANEVRBW         0.019       0.022       0.024       0.032       0.041       0.043       0.046
+    ALCEVRBW        -0.002      -0.001       0.000       0.004       0.008       0.008       0.010
+
+ Residual Variances
+    SRPWCR          -8.182      -5.477      -4.093       3.135      10.362      11.746      14.452
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ SRPWCR   ON
+    CANEVR          -0.077      -0.055      -0.044       0.013       0.071       0.082       0.103
+    DEMMAL          -0.038      -0.015      -0.003       0.058       0.119       0.130       0.153
+    DEMAGE          -0.144      -0.122      -0.110      -0.050       0.009       0.021       0.043
+    ALCEVR          -0.048      -0.033      -0.025       0.014       0.054       0.061       0.076
+
+ CANEVR   WITH
+    DEMMAL          -0.011       0.011       0.023       0.084       0.145       0.156       0.179
+    DEMAGE          -0.225      -0.207      -0.198      -0.149      -0.100      -0.090      -0.072
+    ALCEVR           0.014       0.067       0.093       0.233       0.372       0.399       0.451
+
+ ALCEVR   WITH
+    DEMMAL          -0.151      -0.126      -0.113      -0.047       0.020       0.033       0.058
+    DEMAGE          -0.157      -0.136      -0.126      -0.071      -0.016      -0.005       0.016
+
+ Means
+    DEMAGE          -0.097      -0.074      -0.062       0.000       0.062       0.074       0.097
+    DEMMAL          -0.093      -0.071      -0.059       0.000       0.059       0.071       0.093
+    CANEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SRPWCR           0.979       0.983       0.984       0.993       1.002       1.004       1.007
+
+Between Level
+
+ SRPWCR   ON
+    CANEVRBW        -0.764      -0.641      -0.578      -0.249       0.080       0.143       0.266
+    ALCEVRBW        -0.164      -0.085      -0.045       0.166       0.376       0.416       0.495
+
+ CANEVRBW WITH
+    ALCEVRBW        -0.002       0.064       0.097       0.272       0.446       0.479       0.545
+
+ Means
+    CANEVRBW        -0.096      -0.066      -0.051       0.028       0.107       0.123       0.152
+    ALCEVRBW        -0.120      -0.092      -0.078      -0.004       0.070       0.084       0.111
+
+ Intercepts
+    SRPWCR          -2.181      -0.941      -0.306       3.007       6.320       6.954       8.194
+
+ Variances
+    CANEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SRPWCR           0.671       0.733       0.766       0.933       1.101       1.133       1.195
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ SRPWCR             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ SRPWCR             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ SRPWCR             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             1             2
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  3             4
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ SRPWCR             0             0             0             5             6
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ SRPWCR             7             8
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ SRPWCR             0             0             9
+ DEMAGE             0             0             0            10
+ DEMMAL             0             0             0             0            11
+ CANEVR             0             0             0            12            13
+ ALCEVR             0             0             0            15            16
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR            14
+ ALCEVR            17            18
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ SRPWCR             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ SRPWCR             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ SRPWCR             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                 19            20            21             0             0
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ SRPWCR            22            23             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ SRPWCR             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW          24
+ ALCEVRBW          25            26
+ SRPWCR             0             0            27
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ SRPWCR         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ SRPWCR         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000        38.716
+ DEMAGE         0.000         0.000         0.000         3.520
+ DEMMAL         0.000         0.000         0.000         0.000         0.118
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.014
+ ALCEVR         0.000         0.001
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ SRPWCR         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         5.571         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ SRPWCR         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ SRPWCR         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      SRPWCR        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.016
+ ALCEVRBW       0.000         0.002
+ SRPWCR         0.000         0.000        38.716
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+     Beginning Time:  16:00:35
+        Ending Time:  16:00:36
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

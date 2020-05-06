@@ -1,0 +1,1079 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   4:00 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANEVR_WASBLK_1;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+  	  		WASBLK
+    		! covariates
+  	  		DEMAGE
+    			DEMMAL  		
+    		! within predictor
+    			CANEVR
+    			ALCEVR
+    		! between predictor
+    			CANEVRBW
+    			ALCEVRBW
+    			;
+    	USEOBSERVATION =
+    			(Wave EQ 1 AND WASBLKDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+    	BETWEEN =   		
+    			CANEVRBW
+    			ALCEVRBW
+    		;
+    	WITHIN  		
+    			CANEVR
+    			ALCEVR
+    			DEMAGE
+    			DEMMAL
+    		;  		
+
+  DEFINE:
+  	! CREATE BW FAM PREDICTOR
+  		CANEVRBW = cluster_mean (CANEVR);	
+  		ALCEVRBW = cluster_mean (ALCEVR);	
+  	! CENTER WI FAM VARIABLES
+  		CENTER CANEVR (GROUPMEAN);
+  		CENTER ALCEVR (GROUPMEAN);
+  		CENTER DEMMAL (GRANDMEAN);
+  		CENTER DEMAGE (GRANDMEAN);		
+  	! CENTER BW FAM VARIABLES
+  		CENTER CANEVRBW (GRANDMEAN);
+  		CENTER ALCEVRBW (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = TWOLEVEL RANDOM;
+          ALGORITHM = INTEGRATION;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  %WITHIN%
+  	WASBLK on CANEVR;
+  	WASBLK on  DEMMAL DEMAGE ALCEVR;	
+  	WASBLK*;
+  	CANEVR*;
+
+  	CANEVR WITH DEMMAL*;
+  	CANEVR WITH DEMAGE*;
+  	ALCEVR WITH DEMMAL*;
+  	ALCEVR WITH DEMAGE*;
+  	CANEVR WITH ALCEVR*;
+
+  %BETWEEN%
+  	WASBLK on CANEVRBW ALCEVRBW;
+  	WASBLK*;
+  	CANEVRBW*;
+  	CANEVRBW WITH ALCEVRBW*;
+
+
+
+*** WARNING
+  Data set contains cases with missing on all variables except
+  x-variables.  These cases were not included in the analysis.
+  Number of cases with missing on all variables except x-variables:  1
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANEVR_WASBLK_1;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1106
+
+Number of dependent variables                                    1
+Number of independent variables                                  6
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   WASBLK
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR      CANEVRBW    ALCEVRBW
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Within variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR
+
+  Between variables
+   CANEVRBW    ALCEVRBW
+
+  Centering (GRANDMEAN)
+   DEMMAL      DEMAGE      CANEVRBW    ALCEVRBW
+
+  Centering (GROUPMEAN)
+   CANEVR      ALCEVR
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                             1000000
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  GD190618rr.csv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             5
+     Number of clusters                        583
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.999
+ ALCEVRBW       0.999         0.999
+ WASBLK         0.998         0.998         0.999
+ DEMAGE         0.998         0.998         0.998         0.999
+ DEMMAL         0.999         0.999         0.999         0.999         1.000
+ CANEVR         0.996         0.996         0.995         0.995         0.996
+ ALCEVR         0.996         0.996         0.995         0.995         0.996
+
+
+           Covariance Coverage
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.996
+ ALCEVR         0.996         0.996
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000        49.369         0.000         0.000
+
+
+           Means
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           Covariances
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.044
+ ALCEVRBW       0.014         0.022
+ WASBLK        -0.047         0.017        89.803
+ DEMAGE         0.001         0.026         0.370         4.808
+ DEMMAL         0.009         0.001         0.668        -0.166         0.231
+ CANEVR         0.000         0.000         0.034        -0.085         0.014
+ ALCEVR         0.000         0.000         0.030        -0.016         0.006
+
+
+           Covariances
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.048
+ ALCEVR         0.016         0.024
+
+
+           Correlations
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000
+ ALCEVRBW       0.461         1.000
+ WASBLK        -0.024         0.012         1.000
+ DEMAGE         0.001         0.079         0.018         1.000
+ DEMMAL         0.088         0.008         0.147        -0.158         1.000
+ CANEVR         0.000         0.000         0.016        -0.176         0.133
+ ALCEVR         0.000         0.000         0.020        -0.049         0.077
+
+
+           Correlations
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         1.000
+ ALCEVR         0.477         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -5602.803
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     CANEVRBW              0.012      -2.202      -0.898    1.20%       0.102      0.102      0.102
+             582.000       0.042       4.255       0.102   82.13%       0.102      0.102
+     ALCEVRBW              0.005      -3.400      -0.952    0.34%       0.048      0.048      0.048
+             582.000       0.021      11.411       0.048   91.41%       0.048      0.048
+     WASBLK               49.370      -0.587      21.000    0.09%      42.000     48.000     51.000
+            1105.000      89.804      -0.122      67.000    0.09%      53.000     58.000
+     DEMAGE                0.000       0.975      -3.864    0.09%      -1.774     -0.914     -0.414
+            1105.000       4.808       0.689       7.496    0.09%       0.106      1.566
+     DEMMAL                0.000      -0.580      -0.639   36.08%      -0.639      0.361      0.361
+            1106.000       0.231      -1.664       0.361   63.92%       0.361      0.361
+     CANEVR                0.000      -0.329      -0.750    0.27%       0.000      0.000      0.000
+            1102.000       0.048       2.814       0.750    0.09%       0.000      0.000
+     ALCEVR                0.000      -0.297      -0.667    0.64%       0.000      0.000      0.000
+            1102.000       0.024       8.499       0.750    0.09%       0.000      0.000
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.780D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 18, %WITHIN%: ALCEVR
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       27
+
+Loglikelihood
+
+          H0 Value                       -5958.275
+          H0 Scaling Correction Factor      1.9342
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   11970.550
+          Bayesian (BIC)                 12105.780
+          Sample-Size Adjusted BIC       12020.021
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WASBLK     ON
+    CANEVR            -0.044      1.063     -0.042      0.967
+    DEMMAL             2.527      0.584      4.329      0.000
+    DEMAGE             0.128      0.130      0.988      0.323
+    ALCEVR             0.761      1.626      0.468      0.640
+
+ CANEVR   WITH
+    DEMMAL             0.011      0.003      3.492      0.000
+    DEMAGE            -0.077      0.015     -5.017      0.000
+    ALCEVR             0.016      0.003      5.934      0.000
+
+ ALCEVR   WITH
+    DEMMAL             0.005      0.002      2.274      0.023
+    DEMAGE            -0.013      0.009     -1.369      0.171
+
+ Means
+    DEMAGE             0.000      0.067      0.000      1.000
+    DEMMAL             0.000      0.015      0.000      1.000
+    CANEVR             0.000      0.000      1.635      0.102
+    ALCEVR             0.000      0.000      1.175      0.240
+
+ Variances
+    DEMAGE             4.808      0.232     20.725      0.000
+    DEMMAL             0.231      0.004     53.910      0.000
+    CANEVR             0.048      0.004     11.124      0.000
+    ALCEVR             0.023      0.003      7.223      0.000
+
+ Residual Variances
+    WASBLK            54.896      3.926     13.983      0.000
+
+Between Level
+
+ WASBLK     ON
+    CANEVRBW          -1.802      2.036     -0.885      0.376
+    ALCEVRBW           1.924      2.827      0.680      0.496
+
+ CANEVRBW WITH
+    ALCEVRBW           0.013      0.003      5.247      0.000
+
+ Means
+    CANEVRBW           0.012      0.008      1.385      0.166
+    ALCEVRBW           0.005      0.006      0.809      0.419
+
+ Intercepts
+    WASBLK            49.324      0.333    148.180      0.000
+
+ Variances
+    CANEVRBW           0.042      0.004      9.646      0.000
+    ALCEVRBW           0.021      0.003      6.588      0.000
+
+ Residual Variances
+    WASBLK            32.949      4.246      7.760      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WASBLK     ON
+    CANEVR            -0.001      0.031     -0.042      0.967
+    DEMMAL             0.161      0.036      4.461      0.000
+    DEMAGE             0.037      0.038      0.983      0.325
+    ALCEVR             0.016      0.033      0.468      0.640
+
+ CANEVR   WITH
+    DEMMAL             0.108      0.030      3.626      0.000
+    DEMAGE            -0.160      0.029     -5.597      0.000
+    ALCEVR             0.477      0.051      9.432      0.000
+
+ ALCEVR   WITH
+    DEMMAL             0.071      0.030      2.360      0.018
+    DEMAGE            -0.037      0.027     -1.387      0.165
+
+ Means
+    DEMAGE             0.000      0.030      0.000      1.000
+    DEMMAL             0.000      0.032      0.000      1.000
+    CANEVR             0.001      0.000      1.647      0.100
+    ALCEVR             0.000      0.000      1.185      0.236
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANEVR             1.000      0.000    999.000    999.000
+    ALCEVR             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WASBLK             0.972      0.012     79.618      0.000
+
+Between Level
+
+ WASBLK     ON
+    CANEVRBW          -0.064      0.073     -0.882      0.378
+    ALCEVRBW           0.049      0.071      0.684      0.494
+
+ CANEVRBW WITH
+    ALCEVRBW           0.443      0.061      7.318      0.000
+
+ Means
+    CANEVRBW           0.057      0.044      1.302      0.193
+    ALCEVRBW           0.034      0.044      0.765      0.444
+
+ Intercepts
+    WASBLK             8.577      0.566     15.167      0.000
+
+ Variances
+    CANEVRBW           1.000      0.000    999.000    999.000
+    ALCEVRBW           1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WASBLK             0.996      0.008    124.903      0.000
+
+
+R-SQUARE
+
+Within Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WASBLK             0.028      0.012      2.292      0.022
+
+Between Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WASBLK             0.004      0.008      0.466      0.641
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix             -0.780E-16
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WASBLK   ON
+    CANEVR          -2.782      -2.128      -1.793      -0.044       1.704       2.039       2.693
+    DEMMAL           1.023       1.383       1.567       2.527       3.487       3.671       4.031
+    DEMAGE          -0.206      -0.126      -0.085       0.128       0.341       0.382       0.462
+    ALCEVR          -3.427      -2.426      -1.914       0.761       3.435       3.948       4.949
+
+ CANEVR   WITH
+    DEMMAL           0.003       0.005       0.006       0.011       0.017       0.018       0.020
+    DEMAGE          -0.116      -0.107      -0.102      -0.077      -0.052      -0.047      -0.037
+    ALCEVR           0.009       0.011       0.012       0.016       0.020       0.021       0.023
+
+ ALCEVR   WITH
+    DEMMAL          -0.001       0.001       0.001       0.005       0.009       0.010       0.011
+    DEMAGE          -0.036      -0.031      -0.028      -0.013       0.003       0.005       0.011
+
+ Means
+    DEMAGE          -0.172      -0.131      -0.110       0.000       0.110       0.131       0.172
+    DEMMAL          -0.040      -0.030      -0.025       0.000       0.025       0.030       0.040
+    CANEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    DEMAGE           4.210       4.353       4.426       4.808       5.189       5.263       5.405
+    DEMMAL           0.220       0.222       0.224       0.231       0.238       0.239       0.242
+    CANEVR           0.037       0.040       0.041       0.048       0.055       0.057       0.059
+    ALCEVR           0.015       0.017       0.018       0.023       0.029       0.030       0.032
+
+ Residual Variances
+    WASBLK          44.784      47.202      48.438      54.896      61.354      62.591      65.009
+
+Between Level
+
+ WASBLK   ON
+    CANEVRBW        -7.046      -5.792      -5.151      -1.802       1.547       2.189       3.443
+    ALCEVRBW        -5.359      -3.618      -2.728       1.924       6.575       7.465       9.207
+
+ CANEVRBW WITH
+    ALCEVRBW         0.007       0.008       0.009       0.013       0.017       0.018       0.020
+
+ Means
+    CANEVRBW        -0.010      -0.005      -0.002       0.012       0.026       0.028       0.034
+    ALCEVRBW        -0.011      -0.007      -0.005       0.005       0.015       0.017       0.020
+
+ Intercepts
+    WASBLK          48.466      48.671      48.776      49.324      49.871      49.976      50.181
+
+ Variances
+    CANEVRBW         0.031       0.033       0.035       0.042       0.049       0.051       0.053
+    ALCEVRBW         0.013       0.015       0.016       0.021       0.026       0.027       0.029
+
+ Residual Variances
+    WASBLK          22.012      24.626      25.964      32.949      39.933      41.271      43.885
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WASBLK   ON
+    CANEVR          -0.081      -0.062      -0.052      -0.001       0.050       0.060       0.079
+    DEMMAL           0.068       0.091       0.102       0.161       0.221       0.232       0.255
+    DEMAGE          -0.060      -0.037      -0.025       0.037       0.100       0.112       0.135
+    ALCEVR          -0.070      -0.049      -0.039       0.016       0.070       0.080       0.101
+
+ CANEVR   WITH
+    DEMMAL           0.031       0.050       0.059       0.108       0.157       0.167       0.185
+    DEMAGE          -0.233      -0.216      -0.207      -0.160      -0.113      -0.104      -0.086
+    ALCEVR           0.346       0.377       0.393       0.477       0.560       0.576       0.607
+
+ ALCEVR   WITH
+    DEMMAL          -0.006       0.012       0.022       0.071       0.121       0.130       0.149
+    DEMAGE          -0.107      -0.090      -0.082      -0.037       0.007       0.015       0.032
+
+ Means
+    DEMAGE          -0.078      -0.060      -0.050       0.000       0.050       0.060       0.078
+    DEMMAL          -0.082      -0.063      -0.053       0.000       0.053       0.063       0.082
+    CANEVR           0.000       0.000       0.000       0.001       0.001       0.001       0.001
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.001       0.001
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WASBLK           0.941       0.948       0.952       0.972       0.992       0.996       1.003
+
+Between Level
+
+ WASBLK   ON
+    CANEVRBW        -0.252      -0.207      -0.184      -0.064       0.056       0.079       0.123
+    ALCEVRBW        -0.134      -0.091      -0.068       0.049       0.165       0.188       0.231
+
+ CANEVRBW WITH
+    ALCEVRBW         0.287       0.324       0.343       0.443       0.542       0.561       0.599
+
+ Means
+    CANEVRBW        -0.056      -0.029      -0.015       0.057       0.130       0.144       0.171
+    ALCEVRBW        -0.079      -0.052      -0.039       0.034       0.106       0.119       0.146
+
+ Intercepts
+    WASBLK           7.120       7.468       7.647       8.577       9.507       9.685      10.033
+
+ Variances
+    CANEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WASBLK           0.976       0.981       0.983       0.996       1.009       1.012       1.017
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ WASBLK             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ WASBLK             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             1             2
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  3             4
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ WASBLK             0             0             0             5             6
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ WASBLK             7             8
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ WASBLK             0             0             9
+ DEMAGE             0             0             0            10
+ DEMMAL             0             0             0             0            11
+ CANEVR             0             0             0            12            13
+ ALCEVR             0             0             0            15            16
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR            14
+ ALCEVR            17            18
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ WASBLK             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ WASBLK             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                 19            20            21             0             0
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ WASBLK            22            23             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ WASBLK             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW          24
+ ALCEVRBW          25            26
+ WASBLK             0             0            27
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000        44.902
+ DEMAGE         0.000         0.000         0.000         2.404
+ DEMMAL         0.000         0.000         0.000         0.000         0.115
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.024
+ ALCEVR         0.000         0.012
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000        49.370         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ WASBLK         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ WASBLK         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      WASBLK        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.022
+ ALCEVRBW       0.000         0.011
+ WASBLK         0.000         0.000        44.902
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+     Beginning Time:  16:00:40
+        Ending Time:  16:00:41
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

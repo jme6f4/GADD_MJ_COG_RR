@@ -1,0 +1,1075 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   4:00 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANEVR_TRLBTS_2;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+  	  		TRLBTS
+    		! covariates
+  	  		DEMAGE
+    			DEMMAL  		
+    		! within predictor
+    			CANEVR
+    			ALCEVR
+    		! between predictor
+    			CANEVRBW
+    			ALCEVRBW
+    			;
+    	USEOBSERVATION =
+    			(Wave EQ 2 AND TRLBTSDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+    	BETWEEN =   		
+    			CANEVRBW
+    			ALCEVRBW
+    		;
+    	WITHIN  		
+    			CANEVR
+    			ALCEVR
+    			DEMAGE
+    			DEMMAL
+    		;  		
+
+  DEFINE:
+  	! CREATE BW FAM PREDICTOR
+  		CANEVRBW = cluster_mean (CANEVR);	
+  		ALCEVRBW = cluster_mean (ALCEVR);	
+  	! CENTER WI FAM VARIABLES
+  		CENTER CANEVR (GROUPMEAN);
+  		CENTER ALCEVR (GROUPMEAN);
+  		CENTER DEMMAL (GRANDMEAN);
+  		CENTER DEMAGE (GRANDMEAN);		
+  	! CENTER BW FAM VARIABLES
+  		CENTER CANEVRBW (GRANDMEAN);
+  		CENTER ALCEVRBW (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = TWOLEVEL RANDOM;
+          ALGORITHM = INTEGRATION;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  %WITHIN%
+  	TRLBTS on CANEVR;
+  	TRLBTS on  DEMMAL DEMAGE ALCEVR;	
+  	TRLBTS*;
+  	CANEVR*;
+
+  	CANEVR WITH DEMMAL*;
+  	CANEVR WITH DEMAGE*;
+  	ALCEVR WITH DEMMAL*;
+  	ALCEVR WITH DEMAGE*;
+  	CANEVR WITH ALCEVR*;
+
+  %BETWEEN%
+  	TRLBTS on CANEVRBW ALCEVRBW;
+  	TRLBTS*;
+  	CANEVRBW*;
+  	CANEVRBW WITH ALCEVRBW*;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+CANEVR_TRLBTS_2;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         867
+
+Number of dependent variables                                    1
+Number of independent variables                                  6
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   TRLBTS
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR      CANEVRBW    ALCEVRBW
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Within variables
+   DEMAGE      DEMMAL      CANEVR      ALCEVR
+
+  Between variables
+   CANEVRBW    ALCEVRBW
+
+  Centering (GRANDMEAN)
+   DEMMAL      DEMAGE      CANEVRBW    ALCEVRBW
+
+  Centering (GROUPMEAN)
+   CANEVR      ALCEVR
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                             1000000
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  GD190618rr.csv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             3
+     Number of clusters                        474
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000
+ ALCEVRBW       1.000         1.000
+ TRLBTS         0.909         0.909         0.909
+ DEMAGE         0.999         0.999         0.909         0.999
+ DEMMAL         0.999         0.999         0.909         0.999         0.999
+ CANEVR         1.000         1.000         0.909         0.999         0.999
+ ALCEVR         1.000         1.000         0.909         0.999         0.999
+
+
+           Covariance Coverage
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         1.000
+ ALCEVR         1.000         1.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000        48.846         0.000         0.000
+
+
+           Means
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           Covariances
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.032
+ ALCEVRBW       0.002         0.003
+ TRLBTS         0.092         0.023       110.706
+ DEMAGE        -0.061        -0.002         0.360         7.040
+ DEMMAL         0.008         0.000        -0.085        -0.120         0.235
+ CANEVR         0.000         0.000        -0.147        -0.069         0.008
+ ALCEVR         0.000         0.000         0.000        -0.009        -0.001
+
+
+           Covariances
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.027
+ ALCEVR         0.002         0.002
+
+
+           Correlations
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000
+ ALCEVRBW       0.228         1.000
+ TRLBTS         0.049         0.039         1.000
+ DEMAGE        -0.129        -0.010         0.013         1.000
+ DEMMAL         0.097        -0.002        -0.017        -0.094         1.000
+ CANEVR         0.000         0.000        -0.085        -0.158         0.099
+ ALCEVR         0.000         0.000         0.000        -0.066        -0.040
+
+
+           Correlations
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         1.000
+ ALCEVR         0.232         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -2351.516
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     CANEVRBW              0.006      -3.327      -0.937    1.48%       0.063      0.063      0.063
+             474.000       0.032      11.199       0.063   89.45%       0.063      0.063
+     ALCEVRBW              0.000     -11.987      -0.994    0.21%       0.006      0.006      0.006
+             474.000       0.004     159.574       0.006   98.95%       0.006      0.006
+     TRLBTS               48.821      -0.178       1.000    0.13%      40.000     46.000     48.000
+             788.000     110.756       0.647      78.000    0.25%      52.000     57.000
+     DEMAGE                0.000       0.540      -5.262    0.12%      -2.292     -0.952     -0.322
+             866.000       7.041       0.019       9.758    0.12%       0.418      2.178
+     DEMMAL                0.000      -0.505      -0.622   37.76%      -0.622      0.378      0.378
+             866.000       0.235      -1.745       0.378   62.24%       0.378      0.378
+     CANEVR                0.000      -0.378      -0.750    0.12%       0.000      0.000      0.000
+             867.000       0.027       7.111       0.667    0.23%       0.000      0.000
+     ALCEVR                0.000      -2.052      -0.667    0.12%       0.000      0.000      0.000
+             867.000       0.002     107.299       0.500    0.35%       0.000      0.000
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.159D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 3, %WITHIN%: [ CANEVR ]
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       27
+
+Loglikelihood
+
+          H0 Value                       -3101.781
+          H0 Scaling Correction Factor      8.5356
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                    6257.562
+          Bayesian (BIC)                  6386.218
+          Sample-Size Adjusted BIC        6300.473
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ TRLBTS     ON
+    CANEVR            -5.486      2.315     -2.370      0.018
+    DEMMAL            -0.446      0.754     -0.592      0.554
+    DEMAGE             0.007      0.146      0.045      0.964
+    ALCEVR             4.149      9.352      0.444      0.657
+
+ CANEVR   WITH
+    DEMMAL             0.007      0.003      2.228      0.026
+    DEMAGE            -0.066      0.016     -4.210      0.000
+    ALCEVR             0.002      0.001      1.724      0.085
+
+ ALCEVR   WITH
+    DEMMAL            -0.001      0.001     -1.015      0.310
+    DEMAGE            -0.009      0.006     -1.526      0.127
+
+ Means
+    DEMAGE             0.000      0.100      0.000      1.000
+    DEMMAL             0.000      0.017      0.000      1.000
+    CANEVR             0.000      0.000    999.000    999.000
+    ALCEVR             0.000      0.000    999.000    999.000
+
+ Variances
+    DEMAGE             7.041      0.331     21.266      0.000
+    DEMMAL             0.235      0.004     55.342      0.000
+    CANEVR             0.027      0.004      6.934      0.000
+    ALCEVR             0.003      0.001      1.993      0.046
+
+ Residual Variances
+    TRLBTS            92.130      8.117     11.350      0.000
+
+Between Level
+
+ TRLBTS     ON
+    CANEVRBW           2.447      2.287      1.070      0.285
+    ALCEVRBW           4.556      5.639      0.808      0.419
+
+ CANEVRBW WITH
+    ALCEVRBW           0.003      0.002      1.464      0.143
+
+ Means
+    CANEVRBW           0.006      0.008      0.676      0.499
+    ALCEVRBW           0.000      0.003     -0.073      0.941
+
+ Intercepts
+    TRLBTS            48.813      0.400    121.941      0.000
+
+ Variances
+    CANEVRBW           0.032      0.005      5.993      0.000
+    ALCEVRBW           0.004      0.002      1.713      0.087
+
+ Residual Variances
+    TRLBTS            17.584      6.546      2.686      0.007
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ TRLBTS     ON
+    CANEVR            -0.094      0.040     -2.329      0.020
+    DEMMAL            -0.022      0.038     -0.593      0.553
+    DEMAGE             0.002      0.040      0.045      0.964
+    ALCEVR             0.022      0.049      0.438      0.661
+
+ CANEVR   WITH
+    DEMMAL             0.086      0.037      2.304      0.021
+    DEMAGE            -0.150      0.030     -5.030      0.000
+    ALCEVR             0.233      0.085      2.746      0.006
+
+ ALCEVR   WITH
+    DEMMAL            -0.046      0.041     -1.137      0.256
+    DEMAGE            -0.070      0.033     -2.103      0.035
+
+ Means
+    DEMAGE             0.000      0.038      0.000      1.000
+    DEMMAL             0.000      0.036      0.000      1.000
+    CANEVR             0.000      0.000    999.000    999.000
+    ALCEVR             0.000      0.000    999.000    999.000
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANEVR             1.000      0.000    999.000    999.000
+    ALCEVR             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    TRLBTS             0.991      0.008    130.298      0.000
+
+Between Level
+
+ TRLBTS     ON
+    CANEVRBW           0.104      0.094      1.105      0.269
+    ALCEVRBW           0.067      0.077      0.876      0.381
+
+ CANEVRBW WITH
+    ALCEVRBW           0.272      0.106      2.561      0.010
+
+ Means
+    CANEVRBW           0.031      0.048      0.643      0.520
+    ALCEVRBW          -0.003      0.045     -0.075      0.940
+
+ Intercepts
+    TRLBTS            11.529      2.120      5.438      0.000
+
+ Variances
+    CANEVRBW           1.000      0.000    999.000    999.000
+    ALCEVRBW           1.000      0.000    999.000    999.000
+
+ Residual Variances
+    TRLBTS             0.981      0.023     42.171      0.000
+
+
+R-SQUARE
+
+Within Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRLBTS             0.009      0.008      1.226      0.220
+
+Between Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRLBTS             0.019      0.023      0.823      0.410
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix             -0.159E-16
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ TRLBTS   ON
+    CANEVR         -11.449     -10.024      -9.294      -5.486      -1.678      -0.949       0.476
+    DEMMAL          -2.387      -1.923      -1.686      -0.446       0.793       1.031       1.495
+    DEMAGE          -0.370      -0.280      -0.234       0.007       0.247       0.293       0.384
+    ALCEVR         -19.939     -14.180     -11.234       4.149      19.532      22.478      28.237
+
+ CANEVR   WITH
+    DEMMAL          -0.001       0.001       0.002       0.007       0.012       0.013       0.015
+    DEMAGE          -0.106      -0.096      -0.091      -0.066      -0.040      -0.035      -0.026
+    ALCEVR          -0.001       0.000       0.000       0.002       0.004       0.004       0.005
+
+ ALCEVR   WITH
+    DEMMAL          -0.004      -0.003      -0.003      -0.001       0.001       0.001       0.002
+    DEMAGE          -0.025      -0.021      -0.019      -0.009       0.001       0.003       0.006
+
+ Means
+    DEMAGE          -0.257      -0.195      -0.164       0.000       0.164       0.195       0.257
+    DEMMAL          -0.045      -0.034      -0.029       0.000       0.029       0.034       0.045
+    CANEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    DEMAGE           6.188       6.392       6.496       7.041       7.585       7.689       7.893
+    DEMMAL           0.224       0.227       0.228       0.235       0.242       0.243       0.246
+    CANEVR           0.017       0.020       0.021       0.027       0.034       0.035       0.037
+    ALCEVR          -0.001       0.000       0.000       0.003       0.005       0.005       0.006
+
+ Residual Variances
+    TRLBTS          71.221      76.220      78.777      92.130     105.483     108.040     113.039
+
+Between Level
+
+ TRLBTS   ON
+    CANEVRBW        -3.444      -2.036      -1.315       2.447       6.209       6.929       8.337
+    ALCEVRBW        -9.969      -6.496      -4.720       4.556      13.833      15.609      19.081
+
+ CANEVRBW WITH
+    ALCEVRBW        -0.002      -0.001       0.000       0.003       0.006       0.007       0.008
+
+ Means
+    CANEVRBW        -0.016      -0.011      -0.008       0.006       0.019       0.022       0.027
+    ALCEVRBW        -0.008      -0.006      -0.005       0.000       0.005       0.005       0.007
+
+ Intercepts
+    TRLBTS          47.782      48.028      48.154      48.813      49.471      49.597      49.844
+
+ Variances
+    CANEVRBW         0.019       0.022       0.024       0.032       0.041       0.043       0.046
+    ALCEVRBW        -0.002      -0.001       0.000       0.004       0.008       0.008       0.010
+
+ Residual Variances
+    TRLBTS           0.723       4.754       6.816      17.584      28.352      30.414      34.446
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ TRLBTS   ON
+    CANEVR          -0.198      -0.173      -0.160      -0.094      -0.028      -0.015       0.010
+    DEMMAL          -0.120      -0.097      -0.085      -0.022       0.040       0.052       0.075
+    DEMAGE          -0.102      -0.077      -0.064       0.002       0.068       0.081       0.106
+    ALCEVR          -0.105      -0.075      -0.059       0.022       0.102       0.118       0.148
+
+ CANEVR   WITH
+    DEMMAL          -0.010       0.013       0.024       0.086       0.147       0.158       0.181
+    DEMAGE          -0.226      -0.208      -0.199      -0.150      -0.101      -0.091      -0.073
+    ALCEVR           0.014       0.067       0.093       0.233       0.372       0.399       0.451
+
+ ALCEVR   WITH
+    DEMMAL          -0.151      -0.126      -0.113      -0.046       0.021       0.033       0.059
+    DEMAGE          -0.157      -0.136      -0.126      -0.070      -0.015      -0.005       0.016
+
+ Means
+    DEMAGE          -0.097      -0.074      -0.062       0.000       0.062       0.074       0.097
+    DEMMAL          -0.092      -0.070      -0.059       0.000       0.059       0.070       0.092
+    CANEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    ALCEVR           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    TRLBTS           0.971       0.976       0.978       0.991       1.003       1.006       1.010
+
+Between Level
+
+ TRLBTS   ON
+    CANEVRBW        -0.139      -0.081      -0.051       0.104       0.259       0.289       0.347
+    ALCEVRBW        -0.130      -0.083      -0.059       0.067       0.193       0.217       0.265
+
+ CANEVRBW WITH
+    ALCEVRBW        -0.002       0.064       0.097       0.272       0.446       0.479       0.545
+
+ Means
+    CANEVRBW        -0.093      -0.064      -0.048       0.031       0.111       0.126       0.156
+    ALCEVRBW        -0.119      -0.092      -0.077      -0.003       0.071       0.085       0.113
+
+ Intercepts
+    TRLBTS           6.068       7.373       8.041      11.529      15.016      15.684      16.989
+
+ Variances
+    CANEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ALCEVRBW         1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    TRLBTS           0.921       0.935       0.943       0.981       1.019       1.026       1.041
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ TRLBTS             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ TRLBTS             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ TRLBTS             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             1             2
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  3             4
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ TRLBTS             0             0             0             5             6
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ TRLBTS             7             8
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ TRLBTS             0             0             9
+ DEMAGE             0             0             0            10
+ DEMMAL             0             0             0             0            11
+ CANEVR             0             0             0            12            13
+ ALCEVR             0             0             0            15            16
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR            14
+ ALCEVR            17            18
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ TRLBTS             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ TRLBTS             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0
+ ALCEVRBW           0             0
+ TRLBTS             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1                 19            20            21             0             0
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1                  0             0
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW           0             0             0             0             0
+ ALCEVRBW           0             0             0             0             0
+ TRLBTS            22            23             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW           0             0
+ ALCEVRBW           0             0
+ TRLBTS             0             0
+ DEMAGE             0             0
+ DEMMAL             0             0
+ CANEVR             0             0
+ ALCEVR             0             0
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW          24
+ ALCEVRBW          25            26
+ TRLBTS             0             0            27
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANEVR             0             0             0             0             0
+ ALCEVR             0             0             0             0             0
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR             0
+ ALCEVR             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ TRLBTS         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ TRLBTS         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000        55.378
+ DEMAGE         0.000         0.000         0.000         3.520
+ DEMMAL         0.000         0.000         0.000         0.000         0.118
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.014
+ ALCEVR         0.000         0.001
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           LAMBDA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       1.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         1.000         0.000         0.000         0.000
+ TRLBTS         0.000         0.000         1.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         1.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         1.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         1.000         0.000
+ ALCEVR         0.000         1.000
+
+
+           THETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+           ALPHA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000        48.821         0.000         0.000
+
+
+           ALPHA
+              CANEVR        ALCEVR
+              ________      ________
+ 1              0.000         0.000
+
+
+           BETA
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.000         0.000         0.000         0.000         0.000
+ ALCEVRBW       0.000         0.000         0.000         0.000         0.000
+ TRLBTS         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVRBW       0.000         0.000
+ ALCEVRBW       0.000         0.000
+ TRLBTS         0.000         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000
+ CANEVR         0.000         0.000
+ ALCEVR         0.000         0.000
+
+
+           PSI
+              CANEVRBW      ALCEVRBW      TRLBTS        DEMAGE        DEMMAL
+              ________      ________      ________      ________      ________
+ CANEVRBW       0.016
+ ALCEVRBW       0.000         0.002
+ TRLBTS         0.000         0.000        55.378
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000         0.000
+ ALCEVR         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CANEVR        ALCEVR
+              ________      ________
+ CANEVR         0.000
+ ALCEVR         0.000         0.000
+
+
+     Beginning Time:  16:00:40
+        Ending Time:  16:00:40
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

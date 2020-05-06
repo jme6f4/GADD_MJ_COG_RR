@@ -1,0 +1,541 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   3:52 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANF6M_SRPWCR_1;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+    			SRPWCR
+    		! covariates
+    			DEMAGE
+    			DEMMAL  		
+    		! predictor
+    			CANF6M
+    		;
+    	USEOBSERVATION =
+    			(Wave EQ 1 AND SRPWCRDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+
+  DEFINE:
+  	CENTER	CANF6M
+  			DEMMAL
+  			DEMAGE (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = COMPLEX;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  	SRPWCR on CANF6M;
+  	SRPWCR on  DEMMAL DEMAGE;	
+  	SRPWCR*;
+  	CANF6M WITH DEMMAL*;
+  	CANF6M WITH DEMAGE*;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANF6M_SRPWCR_1;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1188
+
+Number of dependent variables                                    1
+Number of independent variables                                  3
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   SRPWCR
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANF6M
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Centering (GRANDMEAN)
+   CANF6M      DEMMAL      DEMAGE
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                               1000000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  GD190618rr.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             4
+     Number of clusters         598
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR         0.928
+ DEMAGE         0.928         0.999
+ DEMMAL         0.928         0.999         1.000
+ CANF6M         0.924         0.995         0.996         0.996
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+      1         6.126         0.000         0.000         0.009
+
+
+           Covariances
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR        71.919
+ DEMAGE        -2.415         4.921
+ DEMMAL         0.288        -0.152         0.231
+ CANF6M         3.137        -3.555         1.170       116.649
+
+
+           Correlations
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR         1.000
+ DEMAGE        -0.128         1.000
+ DEMMAL         0.071        -0.143         1.000
+ CANF6M         0.034        -0.148         0.225         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11800.670
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SRPWCR                6.089       0.213     -25.000    0.09%      -1.000      4.000      6.000
+            1103.000      71.907       2.037      56.000    0.09%       8.000     13.000
+     DEMAGE                0.000       0.974      -3.766    0.08%      -1.806     -0.926     -0.426
+            1187.000       4.921       0.659       7.594    0.08%       0.084      1.604
+     DEMMAL                0.000      -0.567      -0.636   36.36%      -0.636      0.364      0.364
+            1188.000       0.231      -1.679       0.364   63.64%       0.364      0.364
+     CANF6M                0.000       0.954      -8.373   33.81%      -8.373     -8.043     -7.203
+            1183.000     116.658      -0.669      21.627    7.52%      -3.373     11.627
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.225D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 14, CANF6M
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       14
+
+Loglikelihood
+
+          H0 Value                      -11800.670
+          H0 Scaling Correction Factor      1.0668
+            for MLR
+          H1 Value                      -11800.670
+          H1 Scaling Correction Factor      1.0668
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   23629.341
+          Bayesian (BIC)                 23700.461
+          Sample-Size Adjusted BIC       23655.992
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              0.000*
+          Degrees of Freedom                     0
+          P-Value                           0.0000
+          Scaling Correction Factor         1.0000
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.000
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                             21.575
+          Degrees of Freedom                     3
+          P-Value                           0.0001
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.000
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ SRPWCR   ON
+    CANF6M             0.004      0.024      0.153      0.878
+    DEMMAL             0.924      0.552      1.672      0.095
+    DEMAGE            -0.459      0.121     -3.798      0.000
+
+ CANF6M   WITH
+    DEMMAL             1.170      0.149      7.877      0.000
+    DEMAGE            -3.555      0.629     -5.655      0.000
+
+ DEMMAL   WITH
+    DEMAGE            -0.152      0.032     -4.751      0.000
+
+ Means
+    DEMAGE             0.000      0.067      0.007      0.994
+    DEMMAL             0.000      0.015      0.000      1.000
+    CANF6M             0.009      0.338      0.028      0.978
+
+ Intercepts
+    SRPWCR             6.126      0.272     22.494      0.000
+
+ Variances
+    DEMAGE             4.921      0.227     21.685      0.000
+    DEMMAL             0.231      0.004     56.933      0.000
+    CANF6M           116.649      4.217     27.664      0.000
+
+ Residual Variances
+    SRPWCR            70.532      4.213     16.741      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ SRPWCR   ON
+    CANF6M             0.005      0.030      0.153      0.878
+    DEMMAL             0.052      0.031      1.688      0.091
+    DEMAGE            -0.120      0.031     -3.911      0.000
+
+ CANF6M   WITH
+    DEMMAL             0.225      0.028      8.008      0.000
+    DEMAGE            -0.148      0.026     -5.771      0.000
+
+ DEMMAL   WITH
+    DEMAGE            -0.143      0.030     -4.803      0.000
+
+ Means
+    DEMAGE             0.000      0.030      0.007      0.994
+    DEMMAL             0.000      0.031      0.000      1.000
+    CANF6M             0.001      0.031      0.028      0.978
+
+ Intercepts
+    SRPWCR             0.722      0.036     19.996      0.000
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANF6M             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SRPWCR             0.981      0.008    117.641      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SRPWCR             0.019      0.008      2.313      0.021
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.267E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ SRPWCR   ON
+    CANF6M          -0.057      -0.043      -0.035       0.004       0.043       0.050       0.065
+    DEMMAL          -0.500      -0.159       0.015       0.924       1.832       2.006       2.347
+    DEMAGE          -0.771      -0.697      -0.658      -0.459      -0.260      -0.222      -0.148
+
+ CANF6M   WITH
+    DEMMAL           0.787       0.879       0.926       1.170       1.414       1.461       1.553
+    DEMAGE          -5.175      -4.787      -4.589      -3.555      -2.521      -2.323      -1.936
+
+ DEMMAL   WITH
+    DEMAGE          -0.235      -0.215      -0.205      -0.152      -0.100      -0.089      -0.070
+
+ Means
+    DEMAGE          -0.171      -0.130      -0.109       0.000       0.110       0.131       0.172
+    DEMMAL          -0.038      -0.029      -0.025       0.000       0.025       0.029       0.038
+    CANF6M          -0.862      -0.654      -0.547       0.009       0.566       0.673       0.881
+
+ Intercepts
+    SRPWCR           5.424       5.592       5.678       6.126       6.574       6.660       6.827
+
+ Variances
+    DEMAGE           4.336       4.476       4.548       4.921       5.294       5.366       5.506
+    DEMMAL           0.221       0.223       0.225       0.231       0.238       0.239       0.242
+    CANF6M         105.788     108.384     109.712     116.649     123.585     124.913     127.510
+
+ Residual Variances
+    SRPWCR          59.680      62.274      63.602      70.532      77.463      78.790      81.384
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ SRPWCR   ON
+    CANF6M          -0.073      -0.054      -0.045       0.005       0.054       0.064       0.082
+    DEMMAL          -0.028      -0.008       0.001       0.052       0.103       0.113       0.132
+    DEMAGE          -0.199      -0.180      -0.171      -0.120      -0.070      -0.060      -0.041
+
+ CANF6M   WITH
+    DEMMAL           0.153       0.170       0.179       0.225       0.271       0.280       0.298
+    DEMAGE          -0.215      -0.199      -0.191      -0.148      -0.106      -0.098      -0.082
+
+ DEMMAL   WITH
+    DEMAGE          -0.219      -0.201      -0.192      -0.143      -0.094      -0.085      -0.066
+
+ Means
+    DEMAGE          -0.077      -0.059      -0.049       0.000       0.050       0.059       0.077
+    DEMMAL          -0.080      -0.061      -0.051       0.000       0.051       0.061       0.080
+    CANF6M          -0.080      -0.060      -0.051       0.001       0.052       0.062       0.082
+
+ Intercepts
+    SRPWCR           0.629       0.652       0.663       0.722       0.782       0.793       0.815
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANF6M           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SRPWCR           0.959       0.964       0.967       0.981       0.994       0.997       1.002
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+      1           0             0             0             0
+
+
+           LAMBDA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR             0             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANF6M             0             0             0             0
+
+
+           THETA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR             0
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANF6M             0             0             0             0
+
+
+           ALPHA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+      1           1             2             3             4
+
+
+           BETA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR             0             5             6             7
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANF6M             0             0             0             0
+
+
+           PSI
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR             8
+ DEMAGE             0             9
+ DEMMAL             0            10            11
+ CANF6M             0            12            13            14
+
+
+     STARTING VALUES
+
+
+           NU
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+      1         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR         1.000         0.000         0.000         0.000
+ DEMAGE         0.000         1.000         0.000         0.000
+ DEMMAL         0.000         0.000         1.000         0.000
+ CANF6M         0.000         0.000         0.000         1.000
+
+
+           THETA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+      1         6.089         0.000         0.000         0.000
+
+
+           BETA
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000
+
+
+           PSI
+              SRPWCR        DEMAGE        DEMMAL        CANF6M
+              ________      ________      ________      ________
+ SRPWCR        35.953
+ DEMAGE         0.000         2.460
+ DEMMAL         0.000         0.000         0.116
+ CANF6M         0.000         0.000         0.000        58.329
+
+
+     Beginning Time:  15:52:16
+        Ending Time:  15:52:16
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

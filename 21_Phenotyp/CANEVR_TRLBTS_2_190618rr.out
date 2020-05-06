@@ -1,0 +1,537 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   3:52 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANEVR_TRLBTS_2;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+    			TRLBTS
+    		! covariates
+    			DEMAGE
+    			DEMMAL  		
+    		! predictor
+    			CANEVR
+    		;
+    	USEOBSERVATION =
+    			(Wave EQ 2 AND TRLBTSDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+
+  DEFINE:
+  	CENTER	CANEVR
+  			DEMMAL
+  			DEMAGE (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = COMPLEX;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  	TRLBTS on CANEVR;
+  	TRLBTS on  DEMMAL DEMAGE;	
+  	TRLBTS*;
+  	CANEVR WITH DEMMAL*;
+  	CANEVR WITH DEMAGE*;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANEVR_TRLBTS_2;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         867
+
+Number of dependent variables                                    1
+Number of independent variables                                  3
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   TRLBTS
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANEVR
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Centering (GRANDMEAN)
+   CANEVR      DEMMAL      DEMAGE
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                               1000000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  GD190618rr.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             3
+     Number of clusters         474
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS         0.909
+ DEMAGE         0.909         0.999
+ DEMMAL         0.909         0.999         0.999
+ CANEVR         0.909         0.999         0.999         1.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1        48.828         0.000         0.000         0.000
+
+
+           Covariances
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS       110.758
+ DEMAGE         0.320         7.040
+ DEMMAL        -0.083        -0.120         0.235
+ CANEVR        -0.050        -0.130         0.016         0.059
+
+
+           Correlations
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS         1.000
+ DEMAGE         0.011         1.000
+ DEMMAL        -0.016        -0.094         1.000
+ CANEVR        -0.019        -0.202         0.139         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -5626.165
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     TRLBTS               48.821      -0.178       1.000    0.13%      40.000     46.000     48.000
+             788.000     110.756       0.647      78.000    0.25%      52.000     57.000
+     DEMAGE                0.000       0.540      -5.262    0.12%      -2.292     -0.952     -0.322
+             866.000       7.041       0.019       9.758    0.12%       0.418      2.178
+     DEMMAL                0.000      -0.505      -0.622   37.76%      -0.622      0.378      0.378
+             866.000       0.235      -1.745       0.378   62.24%       0.378      0.378
+     CANEVR                0.000      -3.582      -0.937    6.34%       0.063      0.063      0.063
+             867.000       0.059      10.831       0.063   93.66%       0.063      0.063
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.329D-15.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 14, CANEVR
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       14
+
+Loglikelihood
+
+          H0 Value                       -5626.165
+          H0 Scaling Correction Factor      1.4957
+            for MLR
+          H1 Value                       -5626.165
+          H1 Scaling Correction Factor      1.4957
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   11280.330
+          Bayesian (BIC)                 11347.040
+          Sample-Size Adjusted BIC       11302.580
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              0.000*
+          Degrees of Freedom                     0
+          P-Value                           0.0000
+          Scaling Correction Factor         1.0000
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.000
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                              0.463
+          Degrees of Freedom                     3
+          P-Value                           0.9269
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.000
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ TRLBTS   ON
+    CANEVR            -0.695      1.551     -0.448      0.654
+    DEMMAL            -0.290      0.780     -0.372      0.710
+    DEMAGE             0.028      0.148      0.188      0.851
+
+ CANEVR   WITH
+    DEMMAL             0.016      0.005      3.631      0.000
+    DEMAGE            -0.130      0.032     -4.120      0.000
+
+ DEMMAL   WITH
+    DEMAGE            -0.120      0.044     -2.735      0.006
+
+ Means
+    DEMAGE             0.000      0.100     -0.002      0.999
+    DEMMAL             0.000      0.017      0.001      0.999
+    CANEVR             0.000      0.009      0.000      1.000
+
+ Intercepts
+    TRLBTS            48.828      0.405    120.502      0.000
+
+ Variances
+    DEMAGE             7.040      0.331     21.245      0.000
+    DEMMAL             0.235      0.004     55.282      0.000
+    CANEVR             0.059      0.008      7.824      0.000
+
+ Residual Variances
+    TRLBTS           110.691      6.624     16.710      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ TRLBTS   ON
+    CANEVR            -0.016      0.036     -0.447      0.655
+    DEMMAL            -0.013      0.036     -0.372      0.710
+    DEMAGE             0.007      0.037      0.188      0.851
+
+ CANEVR   WITH
+    DEMMAL             0.139      0.036      3.884      0.000
+    DEMAGE            -0.202      0.042     -4.820      0.000
+
+ DEMMAL   WITH
+    DEMAGE            -0.094      0.034     -2.739      0.006
+
+ Means
+    DEMAGE             0.000      0.038     -0.002      0.999
+    DEMMAL             0.000      0.036      0.001      0.999
+    CANEVR             0.000      0.036      0.000      1.000
+
+ Intercepts
+    TRLBTS             4.640      0.148     31.404      0.000
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANEVR             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    TRLBTS             0.999      0.002    546.231      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRLBTS             0.001      0.002      0.333      0.739
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.278E-05
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ TRLBTS   ON
+    CANEVR          -4.691      -3.736      -3.247      -0.695       1.856       2.345       3.300
+    DEMMAL          -2.298      -1.818      -1.573      -0.290       0.992       1.238       1.718
+    DEMAGE          -0.352      -0.261      -0.215       0.028       0.270       0.317       0.408
+
+ CANEVR   WITH
+    DEMMAL           0.005       0.008       0.009       0.016       0.024       0.025       0.028
+    DEMAGE          -0.212      -0.192      -0.182      -0.130      -0.078      -0.068      -0.049
+
+ DEMMAL   WITH
+    DEMAGE          -0.234      -0.207      -0.193      -0.120      -0.048      -0.034      -0.007
+
+ Means
+    DEMAGE          -0.257      -0.196      -0.164       0.000       0.164       0.195       0.257
+    DEMMAL          -0.045      -0.034      -0.029       0.000       0.029       0.034       0.045
+    CANEVR          -0.022      -0.017      -0.014       0.000       0.014       0.017       0.022
+
+ Intercepts
+    TRLBTS          47.784      48.033      48.161      48.828      49.494      49.622      49.871
+
+ Variances
+    DEMAGE           6.187       6.391       6.495       7.040       7.586       7.690       7.894
+    DEMMAL           0.224       0.227       0.228       0.235       0.242       0.243       0.246
+    CANEVR           0.040       0.045       0.047       0.059       0.072       0.074       0.079
+
+ Residual Variances
+    TRLBTS          93.628      97.707      99.794     110.691     121.588     123.675     127.754
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ TRLBTS   ON
+    CANEVR          -0.109      -0.087      -0.075      -0.016       0.043       0.054       0.077
+    DEMMAL          -0.106      -0.084      -0.072      -0.013       0.046       0.057       0.079
+    DEMAGE          -0.089      -0.066      -0.054       0.007       0.068       0.080       0.103
+
+ CANEVR   WITH
+    DEMMAL           0.047       0.069       0.080       0.139       0.198       0.209       0.231
+    DEMAGE          -0.309      -0.284      -0.270      -0.202      -0.133      -0.120      -0.094
+
+ DEMMAL   WITH
+    DEMAGE          -0.182      -0.161      -0.150      -0.094      -0.037      -0.027      -0.006
+
+ Means
+    DEMAGE          -0.097      -0.074      -0.062       0.000       0.062       0.074       0.097
+    DEMMAL          -0.092      -0.070      -0.059       0.000       0.059       0.070       0.092
+    CANEVR          -0.092      -0.070      -0.059       0.000       0.059       0.070       0.092
+
+ Intercepts
+    TRLBTS           4.259       4.350       4.397       4.640       4.883       4.929       5.020
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    TRLBTS           0.995       0.996       0.996       0.999       1.002       1.003       1.004
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1           0             0             0             0
+
+
+           LAMBDA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS             0             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANEVR             0             0             0             0
+
+
+           THETA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS             0
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANEVR             0             0             0             0
+
+
+           ALPHA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1           1             2             3             4
+
+
+           BETA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS             0             5             6             7
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANEVR             0             0             0             0
+
+
+           PSI
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS             8
+ DEMAGE             0             9
+ DEMMAL             0            10            11
+ CANEVR             0            12            13            14
+
+
+     STARTING VALUES
+
+
+           NU
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS         1.000         0.000         0.000         0.000
+ DEMAGE         0.000         1.000         0.000         0.000
+ DEMMAL         0.000         0.000         1.000         0.000
+ CANEVR         0.000         0.000         0.000         1.000
+
+
+           THETA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1        48.821         0.000         0.000         0.000
+
+
+           BETA
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000
+
+
+           PSI
+              TRLBTS        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ TRLBTS        55.378
+ DEMAGE         0.000         3.520
+ DEMMAL         0.000         0.000         0.118
+ CANEVR         0.000         0.000         0.000         0.030
+
+
+     Beginning Time:  15:52:12
+        Ending Time:  15:52:12
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

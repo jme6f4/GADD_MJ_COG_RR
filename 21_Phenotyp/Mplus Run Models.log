@@ -1,0 +1,73 @@
+------Begin Mplus Model Run: 06May2020 15:52:08------
+Target directory: /Users/jarrodellingson/OneDrive - The University of Colorado Denver/Research/GADMJCOG/Work/Documentation/githubRR/21_Phenotyp
+Run options:
+	Recursive (run models in subdirectories): TRUE
+	Show output on console: TRUE
+	Replace existing outfile: always
+------
+Currently running model: CANEVR_CVLALF_1_190618rr.inp
+Currently running model: CANEVR_CVLALF_2_190618rr.inp
+Currently running model: CANEVR_CVLCOM_1_190618rr.inp
+Currently running model: CANEVR_CVLCOM_2_190618rr.inp
+Currently running model: CANEVR_SRPWCR_1_190618rr.inp
+Currently running model: CANEVR_SRPWCR_2_190618rr.inp
+Currently running model: CANEVR_TRLATS_1_190618rr.inp
+Currently running model: CANEVR_TRLATS_2_190618rr.inp
+Currently running model: CANEVR_TRLBTS_1_190618rr.inp
+Currently running model: CANEVR_TRLBTS_2_190618rr.inp
+Currently running model: CANEVR_WASBLK_1_190618rr.inp
+Currently running model: CANEVR_WASBLK_2_190618rr.inp
+Currently running model: CANEVR_WASDGT_1_190618rr.inp
+Currently running model: CANEVR_WASDGT_2_190618rr.inp
+Currently running model: CANEVR_WASVCB_1_190618rr.inp
+Currently running model: CANEVR_WSISUM_1_190618rr.inp
+Currently running model: CANF6M_CVLALF_1_190618rr.inp
+Currently running model: CANF6M_CVLALF_2_190618rr.inp
+Currently running model: CANF6M_CVLCOM_1_190618rr.inp
+Currently running model: CANF6M_CVLCOM_2_190618rr.inp
+Currently running model: CANF6M_SRPWCR_1_190618rr.inp
+Currently running model: CANF6M_SRPWCR_2_190618rr.inp
+Currently running model: CANF6M_TRLATS_1_190618rr.inp
+Currently running model: CANF6M_TRLATS_2_190618rr.inp
+Currently running model: CANF6M_TRLBTS_1_190618rr.inp
+Currently running model: CANF6M_TRLBTS_2_190618rr.inp
+Currently running model: CANF6M_WASBLK_1_190618rr.inp
+Currently running model: CANF6M_WASBLK_2_190618rr.inp
+Currently running model: CANF6M_WASDGT_1_190618rr.inp
+Currently running model: CANF6M_WASDGT_2_190618rr.inp
+Currently running model: CANF6M_WASVCB_1_190618rr.inp
+Currently running model: CANF6M_WSISUM_1_190618rr.inp
+Currently running model: CANFLF_CVLALF_1_190618rr.inp
+Currently running model: CANFLF_CVLALF_2_190618rr.inp
+Currently running model: CANFLF_CVLCOM_1_190618rr.inp
+Currently running model: CANFLF_CVLCOM_2_190618rr.inp
+Currently running model: CANFLF_SRPWCR_1_190618rr.inp
+Currently running model: CANFLF_SRPWCR_2_190618rr.inp
+Currently running model: CANFLF_TRLATS_1_190618rr.inp
+Currently running model: CANFLF_TRLATS_2_190618rr.inp
+Currently running model: CANFLF_TRLBTS_1_190618rr.inp
+Currently running model: CANFLF_TRLBTS_2_190618rr.inp
+Currently running model: CANFLF_WASBLK_1_190618rr.inp
+Currently running model: CANFLF_WASBLK_2_190618rr.inp
+Currently running model: CANFLF_WASDGT_1_190618rr.inp
+Currently running model: CANFLF_WASDGT_2_190618rr.inp
+Currently running model: CANFLF_WASVCB_1_190618rr.inp
+Currently running model: CANFLF_WSISUM_1_190618rr.inp
+Currently running model: CANONS_CVLALF_1_190618rr.inp
+Currently running model: CANONS_CVLALF_2_190618rr.inp
+Currently running model: CANONS_CVLCOM_1_190618rr.inp
+Currently running model: CANONS_CVLCOM_2_190618rr.inp
+Currently running model: CANONS_SRPWCR_1_190618rr.inp
+Currently running model: CANONS_SRPWCR_2_190618rr.inp
+Currently running model: CANONS_TRLATS_1_190618rr.inp
+Currently running model: CANONS_TRLATS_2_190618rr.inp
+Currently running model: CANONS_TRLBTS_1_190618rr.inp
+Currently running model: CANONS_TRLBTS_2_190618rr.inp
+Currently running model: CANONS_WASBLK_1_190618rr.inp
+Currently running model: CANONS_WASBLK_2_190618rr.inp
+Currently running model: CANONS_WASDGT_1_190618rr.inp
+Currently running model: CANONS_WASDGT_2_190618rr.inp
+Currently running model: CANONS_WASVCB_1_190618rr.inp
+Currently running model: CANONS_WSISUM_1_190618rr.inp
+
+------End Mplus Model Run: 06May2020 15:52:33------

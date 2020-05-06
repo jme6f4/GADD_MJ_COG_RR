@@ -1,0 +1,541 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   3:52 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANEVR_WASBLK_1;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+    			WASBLK
+    		! covariates
+    			DEMAGE
+    			DEMMAL  		
+    		! predictor
+    			CANEVR
+    		;
+    	USEOBSERVATION =
+    			(Wave EQ 1 AND WASBLKDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+
+  DEFINE:
+  	CENTER	CANEVR
+  			DEMMAL
+  			DEMAGE (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = COMPLEX;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  	WASBLK on CANEVR;
+  	WASBLK on  DEMMAL DEMAGE;	
+  	WASBLK*;
+  	CANEVR WITH DEMMAL*;
+  	CANEVR WITH DEMAGE*;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANEVR_WASBLK_1;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1106
+
+Number of dependent variables                                    1
+Number of independent variables                                  3
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   WASBLK
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANEVR
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Centering (GRANDMEAN)
+   CANEVR      DEMMAL      DEMAGE
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                               1000000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  GD190618rr.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             4
+     Number of clusters         583
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK         0.999
+ DEMAGE         0.998         0.999
+ DEMMAL         0.999         0.999         1.000
+ CANEVR         0.995         0.995         0.996         0.996
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1        49.370         0.000         0.000         0.000
+
+
+           Covariances
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK        89.802
+ DEMAGE         0.371         4.808
+ DEMMAL         0.668        -0.166         0.231
+ CANEVR        -0.011        -0.084         0.023         0.092
+
+
+           Correlations
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK         1.000
+ DEMAGE         0.018         1.000
+ DEMMAL         0.147        -0.157         1.000
+ CANEVR        -0.004        -0.127         0.156         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -7448.754
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WASBLK               49.370      -0.587      21.000    0.09%      42.000     48.000     51.000
+            1105.000      89.804      -0.122      67.000    0.09%      53.000     58.000
+     DEMAGE                0.000       0.975      -3.864    0.09%      -1.774     -0.914     -0.414
+            1105.000       4.808       0.689       7.496    0.09%       0.106      1.566
+     DEMMAL                0.000      -0.580      -0.639   36.08%      -0.639      0.361      0.361
+            1106.000       0.231      -1.664       0.361   63.92%       0.361      0.361
+     CANEVR                0.000      -2.620      -0.897   10.25%       0.103      0.103      0.103
+            1102.000       0.092       4.866       0.103   89.75%       0.103      0.103
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.126D-14.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 14, CANEVR
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       14
+
+Loglikelihood
+
+          H0 Value                       -7448.754
+          H0 Scaling Correction Factor      1.2631
+            for MLR
+          H1 Value                       -7448.754
+          H1 Scaling Correction Factor      1.2631
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   14925.509
+          Bayesian (BIC)                 14995.628
+          Sample-Size Adjusted BIC       14951.160
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              0.000*
+          Degrees of Freedom                     0
+          P-Value                           0.0000
+          Scaling Correction Factor         1.0000
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.000
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                             24.628
+          Degrees of Freedom                     3
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.000
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ WASBLK   ON
+    CANEVR            -0.731      1.020     -0.717      0.474
+    DEMMAL             3.091      0.634      4.876      0.000
+    DEMAGE             0.171      0.133      1.287      0.198
+
+ CANEVR   WITH
+    DEMMAL             0.023      0.005      4.964      0.000
+    DEMAGE            -0.084      0.025     -3.365      0.001
+
+ DEMMAL   WITH
+    DEMAGE            -0.166      0.032     -5.185      0.000
+
+ Means
+    DEMAGE             0.000      0.067      0.006      0.995
+    DEMMAL             0.000      0.015      0.000      1.000
+    CANEVR             0.000      0.009      0.020      0.984
+
+ Intercepts
+    WASBLK            49.370      0.334    147.961      0.000
+
+ Variances
+    DEMAGE             4.808      0.232     20.707      0.000
+    DEMMAL             0.231      0.004     53.864      0.000
+    CANEVR             0.092      0.007     12.497      0.000
+
+ Residual Variances
+    WASBLK            87.667      3.913     22.404      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ WASBLK   ON
+    CANEVR            -0.023      0.033     -0.715      0.475
+    DEMMAL             0.157      0.031      4.988      0.000
+    DEMAGE             0.040      0.031      1.282      0.200
+
+ CANEVR   WITH
+    DEMMAL             0.156      0.030      5.251      0.000
+    DEMAGE            -0.127      0.036     -3.476      0.001
+
+ DEMMAL   WITH
+    DEMAGE            -0.157      0.030     -5.264      0.000
+
+ Means
+    DEMAGE             0.000      0.030      0.006      0.995
+    DEMMAL             0.000      0.032      0.000      1.000
+    CANEVR             0.001      0.031      0.020      0.984
+
+ Intercepts
+    WASBLK             5.210      0.137     38.129      0.000
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANEVR             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WASBLK             0.976      0.009    103.126      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WASBLK             0.024      0.009      2.512      0.012
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.142E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ WASBLK   ON
+    CANEVR          -3.357      -2.729      -2.408      -0.731       0.947       1.268       1.896
+    DEMMAL           1.458       1.848       2.048       3.091       4.133       4.333       4.723
+    DEMAGE          -0.171      -0.089      -0.047       0.171       0.389       0.431       0.513
+
+ CANEVR   WITH
+    DEMMAL           0.011       0.014       0.015       0.023       0.030       0.032       0.035
+    DEMAGE          -0.149      -0.133      -0.126      -0.084      -0.043      -0.035      -0.020
+
+ DEMMAL   WITH
+    DEMAGE          -0.248      -0.228      -0.218      -0.166      -0.113      -0.103      -0.083
+
+ Means
+    DEMAGE          -0.172      -0.131      -0.110       0.000       0.110       0.131       0.173
+    DEMMAL          -0.040      -0.030      -0.025       0.000       0.025       0.030       0.040
+    CANEVR          -0.024      -0.018      -0.015       0.000       0.015       0.018       0.024
+
+ Intercepts
+    WASBLK          48.510      48.716      48.821      49.370      49.919      50.024      50.229
+
+ Variances
+    DEMAGE           4.210       4.353       4.426       4.808       5.190       5.263       5.406
+    DEMMAL           0.220       0.222       0.224       0.231       0.238       0.239       0.242
+    CANEVR           0.073       0.078       0.080       0.092       0.104       0.106       0.111
+
+ Residual Variances
+    WASBLK          77.588      79.998      81.230      87.667      94.104      95.337      97.746
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ WASBLK   ON
+    CANEVR          -0.108      -0.088      -0.077      -0.023       0.030       0.041       0.061
+    DEMMAL           0.076       0.095       0.105       0.157       0.208       0.218       0.237
+    DEMAGE          -0.040      -0.021      -0.011       0.040       0.090       0.100       0.119
+
+ CANEVR   WITH
+    DEMMAL           0.080       0.098       0.107       0.156       0.205       0.214       0.233
+    DEMAGE          -0.221      -0.198      -0.187      -0.127      -0.067      -0.055      -0.033
+
+ DEMMAL   WITH
+    DEMAGE          -0.235      -0.216      -0.207      -0.157      -0.108      -0.099      -0.080
+
+ Means
+    DEMAGE          -0.078      -0.060      -0.050       0.000       0.050       0.060       0.079
+    DEMMAL          -0.082      -0.063      -0.053       0.000       0.053       0.063       0.082
+    CANEVR          -0.078      -0.059      -0.050       0.001       0.051       0.060       0.079
+
+ Intercepts
+    WASBLK           4.858       4.942       4.985       5.210       5.435       5.478       5.562
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANEVR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WASBLK           0.952       0.958       0.961       0.976       0.992       0.995       1.001
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1           0             0             0             0
+
+
+           LAMBDA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK             0             0             0             0
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANEVR             0             0             0             0
+
+
+           THETA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK             0
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANEVR             0             0             0             0
+
+
+           ALPHA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1           1             2             3             4
+
+
+           BETA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK             0             5             6             7
+ DEMAGE             0             0             0             0
+ DEMMAL             0             0             0             0
+ CANEVR             0             0             0             0
+
+
+           PSI
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK             8
+ DEMAGE             0             9
+ DEMMAL             0            10            11
+ CANEVR             0            12            13            14
+
+
+     STARTING VALUES
+
+
+           NU
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK         1.000         0.000         0.000         0.000
+ DEMAGE         0.000         1.000         0.000         0.000
+ DEMMAL         0.000         0.000         1.000         0.000
+ CANEVR         0.000         0.000         0.000         1.000
+
+
+           THETA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+      1        49.370         0.000         0.000         0.000
+
+
+           BETA
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000
+ CANEVR         0.000         0.000         0.000         0.000
+
+
+           PSI
+              WASBLK        DEMAGE        DEMMAL        CANEVR
+              ________      ________      ________      ________
+ WASBLK        44.902
+ DEMAGE         0.000         2.404
+ DEMMAL         0.000         0.000         0.115
+ CANEVR         0.000         0.000         0.000         0.046
+
+
+     Beginning Time:  15:52:12
+        Ending Time:  15:52:12
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

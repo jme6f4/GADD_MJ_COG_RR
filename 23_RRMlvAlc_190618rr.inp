@@ -1,0 +1,142 @@
+!        1         2         3         4         5         6         7         8
+!2345678901234567890123456789012345678901234567890123456789012345678901234567890
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Script:	CAN[[mjNames#mj]]_[[cogNames#cog]]_[[waveNames#wave]]_DATE.inp
+! Pject:	GADMJCOG
+! Task:  	Sib Comparison [WI/BW family]
+! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+! DATA
+!	Library:	GADMJCOG
+!	Input:		GD[DATE].csv
+!	Type:     	continuous, raw
+! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+! MODEL
+!	Analyses:	 Mutilevel Model
+! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+! HISTORY
+!	V1: JARROD ELLINGSON    2018 09 11
+!	V2: JARROD ELLINGSON    2018 10 02 [include alcohol, DEMAGE]
+!	V3: JARROD ELLINGSON    2018 11 06 [other covariates]
+!	V4: JARROD ELLINGSON    2018 12 10 [limit to three phenotypes]
+! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+! COMMENTS
+! 	INSERT
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+[[init]]
+iterators =	wave mj cog;
+wave = 1:2;
+mj = 1:4;
+cog = 1:7;
+waveNames#wave = 
+		1 2
+		;
+mjNames#mj = 
+		EVR ONS FLF F6M
+		;
+cogNames#cog =
+		SRPWCR 
+		WASBLK  WASDGT  
+		TRLATS  TRLBTS
+		CVLALF
+		CVLCOM  
+		;
+filename = "CAN[[mjNames#mj]]_[[cogNames#cog]]_[[waveNames#wave]]_190618rr.inp";
+outputDirectory = Work/Documentation/githubRR/23_RRMlvAlc;
+[[/init]]
+
+TITLE: CAN[[mjNames#mj]]_[[cogNames#cog]]_[[waveNames#wave]];
+
+DATA:
+	FILE = GD190618rr.csv;
+
+VARIABLE:
+	NAMES =
+			ID_Fam   Wave     ID_MPL   
+			DEMMAL   DEMAGE   DEMHSP   DEMRAC   
+			SRPWCR  
+			WASVCB   WASBLK   WASDGT   WSISUM   
+			TRLATS   TRLBTS   
+			CVLASF   CVLASC   CVLALF   CVLALC   
+			CVLCOM   
+			CANEVR   CANONS   CANFLF   
+			CANFTY   CANF6M   CANAC6   
+			CANYRS   
+			ALCEVR   ALCONS   ALCFLF  
+			ALCFTY   ALCF6M   ALCAC6  
+			ALCYRS   
+			SRPWCRDt WASVCBDt WASBLKDt 
+			WASDGTDt WSISUMDt TRLATSDt 
+			TRLBTSDt CVLASFDt CVLASCDt 
+			CVLALFDt CVLALCDt CVLCOMDt   
+		;
+	USEVARIABLES =
+		! outcome
+	  		[[cogNames#cog]]
+  		! covariates
+	  		DEMAGE
+  			DEMMAL  		
+  		! within predictor
+  			CAN[[mjNames#mj]]
+  			ALC[[mjNames#mj]]
+  		! between predictor
+  			CAN[[mjNames#mj]]BW
+  			ALC[[mjNames#mj]]BW
+  			;
+  	USEOBSERVATION = 
+  			(Wave EQ [[waveNames#wave]] AND [[cogNames#cog]]Dt EQ 1)
+  		;
+  	CLUSTER = 
+  			ID_Fam
+  		;
+  	MISSING = .;
+  	BETWEEN =   		
+  			CAN[[mjNames#mj]]BW
+  			ALC[[mjNames#mj]]BW
+  		;
+  	WITHIN  		
+  			CAN[[mjNames#mj]]
+  			ALC[[mjNames#mj]]
+  			DEMAGE
+  			DEMMAL
+  		;  		
+
+DEFINE: 
+	! CREATE BW FAM PREDICTOR
+		CAN[[mjNames#mj]]BW = cluster_mean (CAN[[mjNames#mj]]);	
+		ALC[[mjNames#mj]]BW = cluster_mean (ALC[[mjNames#mj]]);	
+	! CENTER WI FAM VARIABLES
+		CENTER CAN[[mjNames#mj]] (GROUPMEAN);
+		CENTER ALC[[mjNames#mj]] (GROUPMEAN);
+		CENTER DEMMAL (GRANDMEAN);
+		CENTER DEMAGE (GRANDMEAN);		
+	! CENTER BW FAM VARIABLES
+		CENTER CAN[[mjNames#mj]]BW (GRANDMEAN);
+		CENTER ALC[[mjNames#mj]]BW (GRANDMEAN);
+    
+ANALYSIS:
+        ITERATIONS = 1000000;
+        TYPE = TWOLEVEL RANDOM;
+        ALGORITHM = INTEGRATION;
+        
+OUTPUT:
+	SAMPSTAT STDYX TECH1 CINT;
+
+MODEL:
+%WITHIN%
+	[[cogNames#cog]] on CAN[[mjNames#mj]];
+	[[cogNames#cog]] on  DEMMAL DEMAGE ALC[[mjNames#mj]];	
+	[[cogNames#cog]]*;
+	CAN[[mjNames#mj]]*;
+
+	CAN[[mjNames#mj]] WITH DEMMAL*;
+	CAN[[mjNames#mj]] WITH DEMAGE*;
+	ALC[[mjNames#mj]] WITH DEMMAL*;
+	ALC[[mjNames#mj]] WITH DEMAGE*;
+	CAN[[mjNames#mj]] WITH ALC[[mjNames#mj]]*;
+
+%BETWEEN%
+	[[cogNames#cog]] on CAN[[mjNames#mj]]BW ALC[[mjNames#mj]]BW;
+	[[cogNames#cog]]*;
+	CAN[[mjNames#mj]]BW*;
+	CAN[[mjNames#mj]]BW WITH ALC[[mjNames#mj]]BW*;

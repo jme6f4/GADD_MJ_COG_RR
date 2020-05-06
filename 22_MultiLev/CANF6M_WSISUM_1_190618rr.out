@@ -1,0 +1,750 @@
+Mplus VERSION 7.4 (Mac)
+MUTHEN & MUTHEN
+05/06/2020   3:58 PM
+
+INPUT INSTRUCTIONS
+
+
+  TITLE: CANF6M_WSISUM_1;
+
+  DATA:
+  	FILE = GD190618rr.csv;
+
+  VARIABLE:
+  	NAMES =
+  			ID_Fam   Wave     ID_MPL
+  			DEMMAL   DEMAGE   DEMHSP   DEMRAC
+  			SRPWCR
+  			WASVCB   WASBLK   WASDGT   WSISUM
+  			TRLATS   TRLBTS
+  			CVLASF   CVLASC   CVLALF   CVLALC
+  			CVLCOM
+  			CANEVR   CANONS   CANFLF
+  			CANFTY   CANF6M   CANAC6
+  			CANYRS
+  			ALCEVR   ALCONS   ALCFLF
+  			ALCFTY   ALCF6M   ALCAC6
+  			ALCYRS
+  			SRPWCRDt WASVCBDt WASBLKDt
+  			WASDGTDt WSISUMDt TRLATSDt
+  			TRLBTSDt CVLASFDt CVLASCDt
+  			CVLALFDt CVLALCDt CVLCOMDt
+  		;
+  	USEVARIABLES =
+  		! outcome
+    			WSISUM
+    		! covariates
+    			DEMAGE
+    			DEMMAL  		
+    		! within predictor
+    			CANF6M
+    		! between predictor
+    			CANF6MBW
+    		;
+    	USEOBSERVATION =
+    			(Wave EQ 1 AND WSISUMDt EQ 1)
+    		;
+    	CLUSTER =
+    			ID_Fam
+    		;
+    	MISSING = .;
+    	BETWEEN =   		
+    			CANF6MBW
+    		;
+    	WITHIN  		
+    			CANF6M
+    			DEMAGE
+    			DEMMAL
+    		;  		
+
+  DEFINE:
+  	! CREATE BW FAM PREDICTOR
+  		CANF6MBW = cluster_mean (CANF6M);
+  	! CENTER WI FAM VARIABLES
+  		CENTER CANF6M (GROUPMEAN);
+  		CENTER DEMMAL (GRANDMEAN);
+  		CENTER DEMAGE (GRANDMEAN);
+  	! CENTER BW FAM VARIABLES
+  		CENTER CANF6MBW (GRANDMEAN);
+
+  ANALYSIS:
+          ITERATIONS = 1000000;
+          TYPE = TWOLEVEL RANDOM;
+          ALGORITHM = INTEGRATION;
+
+  OUTPUT:
+  	SAMPSTAT STDYX TECH1 CINT;
+
+  MODEL:
+  %WITHIN%
+  	WSISUM on CANF6M;
+  	WSISUM on  DEMMAL DEMAGE;	
+  	WSISUM*;
+  	CANF6M WITH DEMMAL*;
+  	CANF6M WITH DEMAGE*;
+  	
+  %BETWEEN%
+  	WSISUM on CANF6MBW;
+  	WSISUM*;
+
+  PLOT:
+  	TYPE = plot3;
+
+
+
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  1
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+CANF6M_WSISUM_1;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1102
+
+Number of dependent variables                                    1
+Number of independent variables                                  4
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   WSISUM
+
+Observed independent variables
+   DEMAGE      DEMMAL      CANF6M      CANF6MBW
+
+Variables with special functions
+
+  Cluster variable      ID_FAM
+
+  Within variables
+   DEMAGE      DEMMAL      CANF6M
+
+  Between variables
+   CANF6MBW
+
+  Centering (GRANDMEAN)
+   DEMMAL      DEMAGE      CANF6MBW
+
+  Centering (GROUPMEAN)
+   CANF6M
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                             1000000
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  GD190618rr.csv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             3
+     Number of clusters                        582
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         1.000
+ DEMAGE         0.999         0.999
+ DEMMAL         1.000         0.999         1.000
+ CANF6M         0.996         0.995         0.996         0.996
+ CANF6MBW       1.000         0.999         1.000         0.996         1.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1             93.802         0.001         0.000         0.004         0.000
+
+
+           Covariances
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM       236.019
+ DEMAGE         0.528         4.797
+ DEMMAL         0.694        -0.163         0.231
+ CANF6M         3.945        -3.283         0.544        46.421
+ CANF6MBW       6.768        -0.701         0.566         0.020        71.814
+
+
+           Correlations
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         1.000
+ DEMAGE         0.016         1.000
+ DEMMAL         0.094        -0.155         1.000
+ CANF6M         0.038        -0.220         0.166         1.000
+ CANF6MBW       0.052        -0.038         0.139         0.000         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -15269.889
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WSISUM               93.802      -0.259      45.000    0.09%      81.000     91.000     95.000
+            1102.000     236.019      -0.187     135.000    0.09%      98.000    107.000
+     DEMAGE                0.000       0.973      -3.861    0.09%      -1.781     -0.911     -0.411
+            1101.000       4.797       0.691       7.499    0.09%       0.119      1.569
+     DEMMAL                0.000      -0.578      -0.639   36.12%      -0.639      0.361      0.361
+            1102.000       0.231      -1.666       0.361   63.88%       0.361      0.361
+     CANF6M                0.000       0.145     -18.113    0.09%      -5.000      0.000      0.000
+            1098.000      46.428       0.446      22.330    0.09%       0.000      4.165
+     CANF6MBW              0.502       0.814      -8.537   12.54%      -8.287     -4.787     -1.867
+             582.000      80.497      -0.412      21.463    3.26%       1.463      7.463
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.270D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 12, %WITHIN%: CANF6M
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       15
+
+Loglikelihood
+
+          H0 Value                      -11296.225
+          H0 Scaling Correction Factor      0.9922
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   22622.449
+          Bayesian (BIC)                 22697.523
+          Sample-Size Adjusted BIC       22649.879
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WSISUM     ON
+    CANF6M             0.086      0.050      1.711      0.087
+    DEMMAL             1.694      0.936      1.811      0.070
+    DEMAGE             0.279      0.215      1.300      0.194
+
+ CANF6M   WITH
+    DEMMAL             0.444      0.094      4.699      0.000
+    DEMAGE            -2.969      0.444     -6.685      0.000
+
+ Means
+    DEMAGE             0.000      0.067      0.003      0.998
+    DEMMAL             0.000      0.015      0.000      1.000
+    CANF6M             0.004      0.003      1.421      0.155
+
+ Variances
+    DEMAGE             4.797      0.233     20.627      0.000
+    DEMMAL             0.231      0.004     54.177      0.000
+    CANF6M            46.036      2.915     15.793      0.000
+
+ Residual Variances
+    WSISUM           117.237      7.573     15.482      0.000
+
+Between Level
+
+ WSISUM     ON
+    CANF6MBW           0.067      0.060      1.124      0.261
+
+ Intercepts
+    WSISUM            93.802      0.566    165.821      0.000
+
+ Residual Variances
+    WSISUM           115.601     10.662     10.842      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ WSISUM     ON
+    CANF6M             0.053      0.032      1.696      0.090
+    DEMMAL             0.075      0.041      1.824      0.068
+    DEMAGE             0.056      0.043      1.300      0.194
+
+ CANF6M   WITH
+    DEMMAL             0.136      0.028      4.809      0.000
+    DEMAGE            -0.200      0.027     -7.465      0.000
+
+ Means
+    DEMAGE             0.000      0.030      0.003      0.998
+    DEMMAL             0.000      0.032      0.000      1.000
+    CANF6M             0.001      0.000      1.422      0.155
+
+ Variances
+    DEMAGE             1.000      0.000    999.000    999.000
+    DEMMAL             1.000      0.000    999.000    999.000
+    CANF6M             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    WSISUM             0.989      0.008    118.249      0.000
+
+Between Level
+
+ WSISUM     ON
+    CANF6MBW           0.056      0.050      1.125      0.261
+
+ Intercepts
+    WSISUM             8.711      0.412     21.152      0.000
+
+ Residual Variances
+    WSISUM             0.997      0.006    180.235      0.000
+
+
+R-SQUARE
+
+Within Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WSISUM             0.011      0.008      1.374      0.169
+
+Between Level
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    WSISUM             0.003      0.006      0.562      0.574
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix             -0.270E-16
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WSISUM   ON
+    CANF6M          -0.043      -0.012       0.003       0.086       0.168       0.184       0.215
+    DEMMAL          -0.715      -0.139       0.155       1.694       3.233       3.528       4.104
+    DEMAGE          -0.274      -0.142      -0.074       0.279       0.633       0.701       0.833
+
+ CANF6M   WITH
+    DEMMAL           0.200       0.259       0.288       0.444       0.599       0.629       0.687
+    DEMAGE          -4.114      -3.840      -3.700      -2.969      -2.239      -2.099      -1.825
+
+ Means
+    DEMAGE          -0.172      -0.131      -0.110       0.000       0.110       0.131       0.172
+    DEMMAL          -0.040      -0.030      -0.025       0.000       0.025       0.030       0.040
+    CANF6M          -0.003      -0.001      -0.001       0.004       0.008       0.009       0.010
+
+ Variances
+    DEMAGE           4.198       4.341       4.414       4.797       5.179       5.253       5.396
+    DEMMAL           0.220       0.222       0.224       0.231       0.238       0.239       0.242
+    CANF6M          38.528      40.323      41.241      46.036      50.831      51.750      53.545
+
+ Residual Variances
+    WSISUM          97.731     102.394     104.780     117.237     129.694     132.079     136.743
+
+Between Level
+
+ WSISUM   ON
+    CANF6MBW        -0.087      -0.050      -0.031       0.067       0.165       0.184       0.220
+
+ Intercepts
+    WSISUM          92.345      92.693      92.872      93.802      94.733      94.911      95.259
+
+ Residual Variances
+    WSISUM          88.138      94.704      98.062     115.601     133.140     136.499     143.064
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Within Level
+
+ WSISUM   ON
+    CANF6M          -0.028      -0.008       0.002       0.053       0.105       0.115       0.135
+    DEMMAL          -0.031      -0.006       0.007       0.075       0.142       0.155       0.180
+    DEMAGE          -0.055      -0.029      -0.015       0.056       0.127       0.141       0.168
+
+ CANF6M   WITH
+    DEMMAL           0.063       0.081       0.090       0.136       0.183       0.192       0.209
+    DEMAGE          -0.269      -0.252      -0.244      -0.200      -0.156      -0.147      -0.131
+
+ Means
+    DEMAGE          -0.078      -0.060      -0.050       0.000       0.050       0.060       0.079
+    DEMMAL          -0.082      -0.063      -0.053       0.000       0.053       0.063       0.082
+    CANF6M           0.000       0.000       0.000       0.001       0.001       0.001       0.002
+
+ Variances
+    DEMAGE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    DEMMAL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    CANF6M           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    WSISUM           0.967       0.972       0.975       0.989       1.002       1.005       1.010
+
+Between Level
+
+ WSISUM   ON
+    CANF6MBW        -0.072      -0.041      -0.026       0.056       0.137       0.153       0.183
+
+ Intercepts
+    WSISUM           7.650       7.904       8.033       8.711       9.388       9.518       9.771
+
+ Residual Variances
+    WSISUM           0.983       0.986       0.988       0.997       1.006       1.008       1.011
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           LAMBDA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           THETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANF6M             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           ALPHA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1                  0             1             2             3             0
+
+
+           BETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0             4             5             6             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           PSI
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             7
+ DEMAGE             0             8
+ DEMMAL             0             0             9
+ CANF6M             0            10            11            12
+ CANF6MBW           0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           LAMBDA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0             0             0             0             0
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           THETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANF6M             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           ALPHA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1                 13             0             0             0             0
+
+
+           BETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM             0             0             0             0            14
+ DEMAGE             0             0             0             0             0
+ DEMMAL             0             0             0             0             0
+ CANF6M             0             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+           PSI
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM            15
+ DEMAGE             0             0
+ DEMMAL             0             0             0
+ CANF6M             0             0             0             0
+ CANF6MBW           0             0             0             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         1.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         1.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         1.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         1.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM       118.009
+ DEMAGE         0.000         2.398
+ DEMMAL         0.000         0.000         0.115
+ CANF6M         0.000         0.000         0.000        23.214
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         1.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         1.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         1.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         1.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         0.000
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ 1             93.802         0.000         0.000         0.000         0.000
+
+
+           BETA
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM         0.000         0.000         0.000         0.000         0.000
+ DEMAGE         0.000         0.000         0.000         0.000         0.000
+ DEMMAL         0.000         0.000         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              WSISUM        DEMAGE        DEMMAL        CANF6M        CANF6MBW
+              ________      ________      ________      ________      ________
+ WSISUM       118.009
+ DEMAGE         0.000         0.000
+ DEMMAL         0.000         0.000         0.000
+ CANF6M         0.000         0.000         0.000         0.000
+ CANF6MBW       0.000         0.000         0.000         0.000        35.907
+
+
+SAMPLE STATISTICS FOR ESTIMATED FACTOR SCORES
+
+
+     SAMPLE STATISTICS
+
+
+           Means
+              B_WSISUM
+              ________
+ 1             93.802
+
+
+           Covariances
+              B_WSISUM
+              ________
+ B_WSISUM      77.556
+
+
+           Correlations
+              B_WSISUM
+              ________
+ B_WSISUM       1.000
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values)
+  Scatterplots (sample values)
+
+     Beginning Time:  15:58:00
+        Ending Time:  15:58:00
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen
